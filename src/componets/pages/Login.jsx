@@ -65,15 +65,15 @@ function Login() {
   };
 
   return (
-    <div className='w-scren h-screen flex justify-center items-center bg-gradient-to-b  from-black/75 to-black/65'>
-      <div className='text-center max-w-[1400px] w-[74vw] min-w-[300px] h-[80vh] max-h-[500px] min-h-[400px] bg-slate-200 rounded-[10px] shadow-md'>
-        <h2 className='p-[50px] font-bold text-5xl'>SGM</h2>
+    <div className='w-scren h-screen flex justify-center items-center bg-gradient-to-b  from-black/75 to-black/55 shadow-2xl p-[20px]'>
+      <main className='text-center max-w-[1400px] w-[74vw] min-w-[330px] h-[80vh] max-h-[500px] min-h-[470px] bg-slate-200 rounded-[10px]'>
+        <h1 className='p-[50px] font-bold text-5xl cursor-default'>SGM</h1>
         {erro && <div className='bg-red'>{erro}</div>}
         <LoginForm onSubmit={handleLogin} matricula={matricula} setMatricula={setMatricula} senha={senha} setSenha={setSenha}/>
-        <div className='p-[10px]'>
-          <Link to="/senhaEsquecida" className='text-green-600 hover:text-green-800 hover:underline'>Esqueceu a senha?</Link>
+        <div className='p-[20px]'>
+          <Link to="/senhaEsquecida" className='text-secundaria hover:text-green-800 hover:underline'>Esqueceu a senha?</Link>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
