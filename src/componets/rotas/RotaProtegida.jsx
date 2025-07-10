@@ -12,7 +12,11 @@ function RotaProtegida({ children, perfilPermitido }) {
     const decoded = jwtDecode(token);
     const perfil = decoded.perfil;
 
-    if (perfil === perfilPermitido) {
+    const perfisPermitidos = Array.isArray(perfilPermitido)
+      ? perfilPermitido
+      : [perfilPermitido];
+
+    if (perfisPermitidos.includes(perfil)) {
       return children;
     } else {
       return <Navigate to="/?erro=acesso-negado" />;

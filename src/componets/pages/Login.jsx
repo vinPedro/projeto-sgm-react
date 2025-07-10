@@ -25,10 +25,11 @@ function Login() {
   }, [location.search]);
 
   const rotasPorPerfil = {
-    aluno: '/aluno',
+    aluno: '/editais',
     professor: '/professor',
     monitor: '/monitor',
     coordenador: '/coordenador',
+    admin: '/admin',
   };
 
   const handleLogin = async (e) => {
@@ -55,7 +56,7 @@ function Login() {
   const gerarTokenFake = (matricula) => {
     const payload = {
       sub: matricula,
-      perfil: matricula === '1' ? 'coordenador' : (matricula === '2' ? 'professor' : (matricula === '3' ? 'monitor' : 'aluno'))
+      perfil: matricula === '1' ? 'coordenador' : (matricula === '2' ? 'professor' : (matricula === '3' ? 'monitor' : ( matricula === '4' ? 'admin' : matricula === '5' ? 'aluno' : 'user')))
     };
     const header = btoa(JSON.stringify({ alg: "HS256", typ: "JWT" }));
     const body = btoa(JSON.stringify(payload));
@@ -65,12 +66,12 @@ function Login() {
   };
 
   return (
-    <div className='w-scren h-screen flex justify-center items-center bg-gradient-to-b  from-black/75 to-black/55 shadow-2xl p-[20px]'>
-      <main className='text-center max-w-[1400px] w-[74vw] min-w-[330px] h-[80vh] max-h-[500px] min-h-[470px] bg-slate-200 rounded-[10px]'>
+    <div className='w-scren h-screen flex justify-center items-center bg-gradient-custom shadow-2xl p-[20px]'>
+      <main className='text-center max-w-[1400px] w-[74vw] min-w-[330px] mb-12 mt-12 bg-slate-200 rounded-[10px]'>
         <h1 className='p-[50px] font-bold text-5xl cursor-default'>SGM</h1>
         {erro && <div className='bg-red'>{erro}</div>}
         <LoginForm onSubmit={handleLogin} matricula={matricula} setMatricula={setMatricula} senha={senha} setSenha={setSenha}/>
-        <div className='p-[20px]'>
+        <div className='pb-[50px] pt-[15px]'>
           <Link to="/senhaEsquecida" className='text-secundaria hover:text-green-800 hover:underline'>Esqueceu a senha?</Link>
         </div>
       </main>

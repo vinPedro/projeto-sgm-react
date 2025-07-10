@@ -1,3 +1,5 @@
+import scrollbar from 'tailwind-scrollbar';
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html",
@@ -5,11 +7,13 @@ export default {
   theme: {
     extend: {
       colors:{
-        primaria: 'var(--cor-primaria)',
-        secundaria: 'var(--cor-secundaria)',
+        primaria: '#22c55e',
+        secundaria: '#16a34a',
       },
     },
   },
-  plugins: [],
+  plugins: [
+    scrollbar,
+  ],
 }
 

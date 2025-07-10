@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-    --cor-primaria: #22c55e;
-    --cor-secundaria: #16a34a;
+@layer utilities {
+    .bg-gradient-custom {
+        @apply bg-gradient-to-b from-black/75 to-black/55;
+    }
 }

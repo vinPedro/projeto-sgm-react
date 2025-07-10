@@ -1,3 +1,8 @@
 export default function Coordenador() {
-  return <h2>Bem-vindo, Coordenador!</h2>;
+  return(
+    <div className="flex justify-center items-center min-h-[500px] h-[80vh]">
+      <h2 >Bem-vindo, Coordenador!</h2>
+    </div>
+    
+  );
 }
