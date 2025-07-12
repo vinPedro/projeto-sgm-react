@@ -1,24 +1,40 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-//import axios from "axios";
-import { fetchAlunos } from "../aluno/fetchAlunos";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+//import { fetchAlunos } from "../aluno/fetchAlunos";
 import Button from "../form/Button"
 
 export default function Aluno() {
+
+  const navigate = useNavigate();
   const { id } = useParams();
   const [aluno, setAluno] = useState(null);
-
-  //const [erro, setErro] = useState(null);
+  const [erro, setErro] = useState(null);
 
   useEffect(() => {
-    async function loadAlunos() {
-      const data = await fetchAlunos();
-      const encontrado = data.find((a) => a.id === parseInt(id));
-      setAluno(encontrado);
-    }
+    axios.get(`http://localhost:8080/api/alunos/${id}`)
+      .then(response => {
+        setAluno(response.data);
+      })
+      .catch(error => {
+        console.error('Erro ao buscar aluno:', error);
+        setErro('Erro ao buscar os dados do aluno');
+      });
+  }, [id]); 
 
-    loadAlunos();
-  }, [id]);
+  const deletar = () => {
+        axios
+            .delete(`http://localhost:8080/api/alunos/${id}`)
+            .then(() => {
+                navigate(-1);
+            })
+            .catch((err) => {
+                console.error("Erro ao salvar perfil:", err);
+            });
+    };
+
+  if (erro) return <div>{erro}</div>;
 
   if (!aluno) return <div className="flex justify-center items-center min-h-[80vh] ">
     <h1 className="text-[1.2em] font-semibold">Carregando aluno...</h1>
@@ -36,20 +52,16 @@ export default function Aluno() {
             <p><strong>Matrícula: </strong> {aluno.matricula}</p>
             <p><strong>E-mail: </strong> {aluno.email}</p>
             <p><strong>E-mail Acadêmico: </strong> {aluno.emailAcademico}</p>
-            <p><strong>Curso: </strong> {aluno.curso}</p>
+            {/* <p><strong>Curso: </strong> {aluno.curso}</p> */}
           </div>
           <div className="mt-auto flex justify-center">
-            <Button color="color">
+            <Button color="color" type="button" onClick={deletar}>
               Deletar
             </Button>
-            <Button>
+            <Button type="button" onClick={() => navigate(`/perfil/${id}`)}>
               Editar
             </Button>
           </div>
-            
-          
-          
-          
         </div>
       </div>
     </>

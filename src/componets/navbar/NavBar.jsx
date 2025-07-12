@@ -34,7 +34,7 @@ function NavBar() {
 
             {perfil === 'aluno' && (
                 <ScrollContainer>
-                    <NavItem to='/perfil' label="Perfil" />
+                    {/*<NavItem to='/perfil' label="Perfil" />*/}
                     <NavItem to='/editais' label="Editais" />
                     <NavItem to='/monitorias' label="Agenda" />
                 </ScrollContainer>

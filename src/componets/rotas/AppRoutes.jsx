@@ -37,7 +37,7 @@ function AppRoutes() {
           </RotaProtegida>
         } />
 
-        <Route path="/perfil" element={
+        <Route path="/perfil/:id" element={
           <RotaProtegida perfilPermitido={["professor", "coordenador", "aluno", "monitor", "admin"]}>
             <Perfil />
           </RotaProtegida>

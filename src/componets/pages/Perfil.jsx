@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import Campo from "../form/Campo";
 import ButtonSubmit from "../form/Button";
 
 export default function Perfil() {
 
+    const {id} = useParams();
     const [perfil, setPerfil] = useState(null);
     const [form, setForm] = useState({});
     const [editando, setEditando] = useState(false);
 
     useEffect(() => {
         axios
-            .get("/api/aluno") // Substitua pela sua URL real
+            .get(`http://localhost:8080/api/alunos/${id}`) // Substitua pela sua URL real
             .then((res) => {
                 setPerfil(res.data);
                 setForm(res.data);
@@ -19,7 +21,7 @@ export default function Perfil() {
             .catch((err) => {
                 console.error("Erro ao carregar perfil:", err);
             });
-    }, []);
+    }, [id]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -28,7 +30,7 @@ export default function Perfil() {
 
     const salvar = () => {
         axios
-            .put("/api/aluno", form)
+            .put(`http://localhost:8080/api/alunos/${id}`, form)
             .then((res) => {
                 setPerfil(res.data);
                 setEditando(false);
@@ -50,46 +52,53 @@ export default function Perfil() {
                     <Campo
                         label="Nome"
                         name="nome"
-                        value={form.nome}
+                        value={form.nome ?? ""}
                         onChange={handleChange}
                         disabled={!editando}
                     />
                     <Campo
                         label="CPF"
                         name="cpf"
-                        value={form.cpf}
+                        value={form.cpf ?? ""}
                         onChange={handleChange}
-                        disabled={!editando}
+                        disabled={true}
                     />
 
                     <Campo
                         label="Matrícula"
                         name="matricula"
-                        value={form.matricula}
+                        value={form.matricula ?? ""}
                         onChange={handleChange}
-                        disabled={!editando}
+                        disabled={true}
                     />
                     <Campo
                         label="Email"
                         name="email"
-                        value={form.email}
+                        value={form.email ?? ""}
                         onChange={handleChange}
                         disabled={!editando}
                     />
                     <Campo
                         label="Email-Academico"
-                        name="emailacademico"
-                        value={form.emailAcademico}
+                        name="emailAcademico"
+                        value={form?.emailAcademico ?? ""}
                         onChange={handleChange}
                         disabled={!editando}
                     />
                     <Campo
-                        label="Curso"
-                        name="curso"
-                        value={form.curso}
+                        label="Instituição"
+                        name="instituicao"
+                        value={form.instituicaoResponseDTO.id ?? ""}
                         onChange={handleChange}
                         disabled={!editando}
                     />
+                    {/*<Campo
+                        label="Curso"
+                        name="curso"
+                        value={form.curso ?? ""}
+                        onChange={handleChange}
+                        disabled={!editando}
+                    />*/}
                 </div>
 
                 <div className="mt-6 flex justify-end gap-4">
