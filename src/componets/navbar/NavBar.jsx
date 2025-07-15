@@ -43,6 +43,7 @@ function NavBar() {
             {perfil === 'admin' && (
                 <ScrollContainer>
                     <NavItem to='/admin' label="Painel admin" />
+                    <NavItem to='/instituicoes' label="Instituições" />
                     <NavItem to='/alunos' label="Alunos" />
                 </ScrollContainer>
             )}
@@ -51,21 +52,17 @@ function NavBar() {
                 <ScrollContainer>
                     <NavItem to='/coordenador' label="Coordenação" />
                     <NavItem to='/alunos' label="Alunos" />
-                    <NavItem to='/professor' label="Painel Professor" />
-                    <NavItem to='/professor' label="Painel Professor" />
+                    
+                  
+                  
+                   
                     <NavItem to='/monitor' label="Monitoria" />
-                    <NavItem to='/coordenador' label="Coordenação" />
-                    <NavItem to='/professor' label="Painel Professor" />
-                    <NavItem to='/professor' label="Painel Professor" />
-                    <NavItem to='/professor' label="Painel Professor" />
-                    <NavItem to='/monitor' label="Monitoria" />
-                    <NavItem to='/coordenador' label="Coordenação" />
-                    <NavItem to='/professor' label="Painel Professor" />
-                    <NavItem to='/professor' label="Painel Professor" />
-                    <NavItem to='/professor' label="Painel Professor" />
+                    
+                   
+                    
                     <NavItem to='/monitor' label="Monitoria" />
                     <NavItem to='/professor' label="Painel Professor" />
-                    <NavItem to='/monitor' label="Monitoria" />
+                   
                 </ScrollContainer>
             )}
         </nav>

@@ -13,6 +13,9 @@ import Perfil from '../pages/Perfil';
 import Editais from '../pages/Editais';
 import Monitorias from '../pages/Monitorias';
 import Alunos from '../pages/Alunos';
+import Instituicoes from "../pages/Instituicoes";
+import NovaInstituicao from "../pages/NovaInstituicao";
+import EditarInstituicao from '../pages/EditarInstituicao';
 
 function AppRoutes() {
 
@@ -88,6 +91,11 @@ function AppRoutes() {
             <Admin />
           </RotaProtegida>
         } />
+        <Route path="/instituicoes" element={<Instituicoes />} />
+
+        <Route path="/instituicoes/novo" element={<NovaInstituicao />} />
+
+        <Route path="/instituicoes/:id" element={<EditarInstituicao />} />
       </Routes>
     </>
   )
