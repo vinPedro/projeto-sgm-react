@@ -15,31 +15,63 @@ export default function NovaDisciplina() {
 
   const [professores, setProfessores] = useState([]);
   const [cursos, setCursos] = useState([]);
-  const [erro, setErro] = useState(null);
+  const [erros, setErros] = useState({});
 
   useEffect(() => {
     axios
       .get("http://localhost:8080/api/professores")
       .then((res) => setProfessores(res.data))
-      .catch(() => setErro("Erro ao carregar professores."));
+      .catch(() =>
+        setErros((prev) => ({
+          ...prev,
+          geral: "Erro ao carregar professores.",
+        }))
+      );
+
     axios
       .get("http://localhost:8080/api/cursos")
       .then((res) => setCursos(res.data))
-      .catch(() => setErro("Erro ao carregar cursos."));
+      .catch(() =>
+        setErros((prev) => ({ ...prev, geral: "Erro ao carregar cursos." }))
+      );
   }, []);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    // Limpa o erro do campo ao ser modificado
+    if (erros[e.target.name]) {
+      setErros((prev) => ({ ...prev, [e.target.name]: null }));
+    }
+  };
+
+  const validarFormulario = () => {
+    const novosErros = {};
+    if (!form.nome.trim()) {
+      novosErros.nome = "O campo Nome é obrigatório.";
+    }
+    if (!form.cargaHoraria) {
+      novosErros.cargaHoraria = "O campo Carga Horária é obrigatório.";
+    }
+    return novosErros;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const errosDeValidacao = validarFormulario();
+    if (Object.keys(errosDeValidacao).length > 0) {
+      setErros(errosDeValidacao);
+      return;
+    }
+
+    setErros({});
+
     axios
       .post("http://localhost:8080/api/disciplinas", form)
       .then(() => navigate("/disciplinas"))
       .catch((error) => {
         console.error("Erro ao criar disciplina:", error);
-        setErro("Erro ao salvar. Verifique os dados.");
+        setErros({ geral: "Erro ao salvar. Verifique os dados." });
       });
   };
 
@@ -51,7 +83,9 @@ export default function NovaDisciplina() {
       >
         <h2 className="text-2xl font-bold mb-4">Nova Disciplina</h2>
 
-        {erro && <p className="text-red-500 mb-4">{erro}</p>}
+        {erros.geral && (
+          <p className="text-red-500 mb-4 text-center">{erros.geral}</p>
+        )}
 
         <Campo
           label="Nome da Disciplina"
@@ -60,6 +94,9 @@ export default function NovaDisciplina() {
           onChange={handleChange}
           required
         />
+        {erros.nome && (
+          <p className="text-red-500 text-sm -mt-2 mb-2">{erros.nome}</p>
+        )}
 
         <Campo
           label="Carga Horária"
@@ -69,6 +106,11 @@ export default function NovaDisciplina() {
           onChange={handleChange}
           required
         />
+        {erros.cargaHoraria && (
+          <p className="text-red-500 text-sm -mt-2 mb-2">
+            {erros.cargaHoraria}
+          </p>
+        )}
 
         <div className="mb-4">
           <label className="block mb-1 text-gray-600">Professor</label>

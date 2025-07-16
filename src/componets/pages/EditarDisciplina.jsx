@@ -17,7 +17,7 @@ export default function EditarDisciplina() {
 
   const [professores, setProfessores] = useState([]);
   const [cursos, setCursos] = useState([]);
-  const [erro, setErro] = useState(null);
+  const [erros, setErros] = useState({});
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
@@ -33,15 +33,15 @@ export default function EditarDisciplina() {
         setForm({
           nome: disciplina.nome || "",
           cargaHoraria: disciplina.cargaHoraria || "",
-          professorId: disciplina.professor?.id || "",
-          cursoId: disciplina.curso?.id || "",
+          professorId: disciplina.professorResponseDTO?.id || "",
+          cursoId: disciplina.cursoResponseDTO?.id || "",
         });
 
         setProfessores(respProf.data);
         setCursos(respCursos.data);
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
-        setErro("Erro ao carregar dados da disciplina.");
+        setErros({ geral: "Erro ao carregar dados da disciplina." });
       } finally {
         setCarregando(false);
       }
@@ -52,22 +52,46 @@ export default function EditarDisciplina() {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    if (erros[e.target.name]) {
+      setErros((prev) => ({ ...prev, [e.target.name]: null }));
+    }
+  };
+
+  const validarFormulario = () => {
+    const novosErros = {};
+    if (!form.nome.trim()) {
+      novosErros.nome = "O campo Nome é obrigatório.";
+    }
+    if (!form.cargaHoraria) {
+      novosErros.cargaHoraria = "O campo Carga Horária é obrigatório.";
+    }
+    return novosErros;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const errosDeValidacao = validarFormulario();
+    if (Object.keys(errosDeValidacao).length > 0) {
+      setErros(errosDeValidacao);
+      return;
+    }
+
+    setErros({});
+
     axios
       .put(`http://localhost:8080/api/disciplinas/${id}`, form)
       .then(() => navigate("/disciplinas"))
       .catch((err) => {
         console.error("Erro ao atualizar disciplina:", err);
-        setErro("Erro ao salvar. Verifique os dados.");
+        setErros({ geral: "Erro ao salvar. Verifique os dados." });
       });
   };
 
   if (carregando)
     return <p className="text-center mt-4">Carregando dados...</p>;
-  if (erro) return <p className="text-red-500 text-center mt-4">{erro}</p>;
+  if (erros.geral && !carregando)
+    return <p className="text-red-500 text-center mt-4">{erros.geral}</p>;
 
   return (
     <div className="flex justify-center mt-10">
@@ -77,8 +101,6 @@ export default function EditarDisciplina() {
       >
         <h2 className="text-2xl font-bold mb-4">Editar Disciplina</h2>
 
-        {erro && <p className="text-red-500 mb-4">{erro}</p>}
-
         <Campo
           label="Nome da Disciplina"
           name="nome"
@@ -86,6 +108,9 @@ export default function EditarDisciplina() {
           onChange={handleChange}
           required
         />
+        {erros.nome && (
+          <p className="text-red-500 text-sm -mt-2 mb-2">{erros.nome}</p>
+        )}
 
         <Campo
           label="Carga Horária"
@@ -95,6 +120,11 @@ export default function EditarDisciplina() {
           onChange={handleChange}
           required
         />
+        {erros.cargaHoraria && (
+          <p className="text-red-500 text-sm -mt-2 mb-2">
+            {erros.cargaHoraria}
+          </p>
+        )}
 
         <div className="mb-4">
           <label className="block mb-1 text-gray-600">Professor</label>
