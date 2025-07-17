@@ -34,8 +34,8 @@ export default function CadastroAluno() {
     if (erro) return <div>{erro}</div>;
 
     return (
-        <div className="flex justify-center bg-gradient-custom min-h-screen">
-            <div className="bg-white w-[74vw] max-w-[500px] min-w-[330px] border-2 border-primaria mx-auto mt-10 mb-10 p-6 rounded-[10px] shadow-2xl">
+        <div className="flex justify-center items-center bg-gradient-custom min-h-screen">
+            <div className="bg-white w-[74vw] max-w-[500px] min-w-[330px] max-h-[680px] border-2 border-primaria mx-auto mt-10 mb-10 p-6 rounded-[10px] shadow-2xl">
                 <h1 className="text-2xl font-semibold mb-4">Cadastro</h1>
                 <form onSubmit={handleSubmit} className="">
                     <Campo

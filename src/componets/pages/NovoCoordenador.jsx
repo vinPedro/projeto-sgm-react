@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import * as coordenadorService from "../services/coordenadorService";
-import Button from "../../../../../Downloads/projeto-sgm-react-feature-crud_disciplina/projeto-sgm-react-feature-crud_disciplina/src/componets/form/Button.jsx";
-import Campo from "../../../../../Downloads/projeto-sgm-react-feature-crud_disciplina/projeto-sgm-react-feature-crud_disciplina/src/componets/form/Campo.jsx"; // Importe o componente Campo
+import Button from "../form/Button.jsx";
+import Campo from "../form/Campo.jsx"; // Importe o componente Campo
 
 export default function NovoCoordenador() {
     const navigate = useNavigate();
@@ -31,7 +31,7 @@ export default function NovoCoordenador() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Adicione validações se necessário
+        
 
         coordenadorService.createCoordenador(form)
             .then(() => navigate("/coordenadores"))

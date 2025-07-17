@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode";
-import NavItem from "../../../../../Downloads/projeto-sgm-react-feature-crud_disciplina/projeto-sgm-react-feature-crud_disciplina/src/componets/navbar/NavItem.jsx";
-import ScrollContainer from "../../../../../Downloads/projeto-sgm-react-feature-crud_disciplina/projeto-sgm-react-feature-crud_disciplina/src/componets/navbar/ScrollContainer.jsx";
+import NavItem from "../navbar/NavItem.jsx";
+import ScrollContainer from "../navbar/ScrollContainer.jsx";
 
 function NavBar() {
   const token = localStorage.getItem("token");
