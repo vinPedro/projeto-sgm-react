@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import * as coordenadorService from "../../../../../../IdeaProjects/projeto-sgm-react/src/services/coordenadorService"; // Usando nosso serviço
-import Button from "../../../../../Downloads/projeto-sgm-react-feature-crud_disciplina/projeto-sgm-react-feature-crud_disciplina/src/componets/form/Button.jsx";
+import * as coordenadorService from "../services/coordenadorService";
+import Button from "../../componets/form/Button.jsx";
 
 export default function Coordenadores() {
     const navigate = useNavigate();

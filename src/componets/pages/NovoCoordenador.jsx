@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
-import * as service from "../../../../../../IdeaProjects/projeto-sgm-react/src/services/coordenadorService";
+import * as coordenadorService from "../services/coordenadorService";
 import Button from "../../../../../Downloads/projeto-sgm-react-feature-crud_disciplina/projeto-sgm-react-feature-crud_disciplina/src/componets/form/Button.jsx";
 import Campo from "../../../../../Downloads/projeto-sgm-react-feature-crud_disciplina/projeto-sgm-react-feature-crud_disciplina/src/componets/form/Campo.jsx"; // Importe o componente Campo
 
@@ -19,7 +19,7 @@ export default function NovoCoordenador() {
     // Você ainda pode querer carregar a lista de cursos para um dropdown
     const [cursos, setCursos] = useState([]);
     useEffect(() => {
-        service.getCursos()
+        coordenadorService.getCursos()
             .then((res) => setCursos(res.data))
             .catch(() => setErros((prev) => ({ ...prev, geral: "Erro ao carregar cursos." })));
     }, []);
@@ -33,7 +33,7 @@ export default function NovoCoordenador() {
         e.preventDefault();
         // Adicione validações se necessário
 
-        service.createCoordenador(form)
+        coordenadorService.createCoordenador(form)
             .then(() => navigate("/coordenadores"))
             .catch((error) => {
                 console.error("Erro ao criar coordenador:", error);
