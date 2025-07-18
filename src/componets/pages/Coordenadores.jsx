@@ -69,9 +69,9 @@ export default function Coordenadores() {
                     <tbody>
                     {coordenadores.map((coord) => (
                         <tr key={coord.id} className="hover:bg-gray-50">
-                            <td className="p-3 border-b border-gray-300">{coord.nomeProfessor}</td>
-                            <td className="p-3 border-b border-gray-300">{coord.emailProfessor}</td>
-                            <td className="p-3 border-b border-gray-300">{coord.nomeCurso}</td>
+                            <td className="p-3 border-b border-gray-300">{coord.nome}</td>
+                            <td className="p-3 border-b border-gray-300">{coord.email}</td>
+                            <td className="p-3 border-b border-gray-300">{coord.cursoResponseDTO.nome}</td>
                             <td className="p-3 border-b border-gray-300 text-center space-x-2">
                                 <Button
                                     onClick={() => deletar(coord.id)}
