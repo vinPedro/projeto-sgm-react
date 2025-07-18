@@ -29,15 +29,14 @@ export default function Coordenadores() {
     }
 
     function deletar(id) {
-        if (window.confirm("Tem certeza que deseja remover este coordenador?")) {
+        if (window.confirm("Tem certeza que deseja remover o cargo deste coordenador? Ele voltará a ser apenas um professor.")) {
             coordenadorService.deleteCoordenador(id)
                 .then(() => {
-                    // Remove o coordenador da lista na tela
                     setCoordenadores(coordenadores.filter((c) => c.id !== id));
                 })
                 .catch((error) => {
-                    console.error("Erro ao deletar coordenador:", error);
-                    alert("Erro ao deletar o coordenador.");
+                    console.error("Erro ao remover cargo de coordenador:", error);
+                    alert("Erro ao remover o cargo do coordenador.");
                 });
         }
     }
@@ -73,9 +72,16 @@ export default function Coordenadores() {
                             <td className="p-3 border-b border-gray-300">{coord.email}</td>
                             <td className="p-3 border-b border-gray-300">{coord.cursoResponseDTO.nome}</td>
                             <td className="p-3 border-b border-gray-300 text-center space-x-2">
+                                {/* BOTÃO ADICIONADO */}
+                                <Button
+                                    onClick={() => navigate(`/coordenadores/editar/${coord.id}`)}
+                                    color="color"
+                                >
+                                    Editar
+                                </Button>
                                 <Button
                                     onClick={() => deletar(coord.id)}
-                                    color="red" // Adapte a cor se necessário
+                                    color="red"
                                 >
                                     Excluir
                                 </Button>
