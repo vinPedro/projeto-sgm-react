@@ -1,4 +1,4 @@
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 import NavItem from "../navbar/NavItem.jsx";
 import ScrollContainer from "../navbar/ScrollContainer.jsx";
 

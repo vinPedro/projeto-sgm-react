@@ -1,7 +1,6 @@
-import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import {useNavigate, useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 //import { fetchAlunos } from "../aluno/fetchAlunos";
 import Button from "../form/Button"
 

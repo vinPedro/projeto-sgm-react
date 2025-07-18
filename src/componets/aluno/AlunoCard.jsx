@@ -1,5 +1,5 @@
 import Button from "../form/Button";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 export default function AlunoCard({ aluno }) {
     const navigate = useNavigate();

@@ -1,5 +1,5 @@
-import { Navigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
+import {Navigate} from 'react-router-dom';
+import {jwtDecode} from 'jwt-decode';
 
 function RotaProtegida({ children, perfilPermitido }) {
   const token = localStorage.getItem('token');

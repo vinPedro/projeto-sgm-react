@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import * as coordenadorService from "../services/coordenadorService";
 import Button from "../../componets/form/Button.jsx";
 

@@ -1,7 +1,7 @@
 // pages/EditalListPage.jsx
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import MonitorCard from "../monitoria/MonitorCard";
-import { fetchMonitorias } from "../monitoria/fetchMonitores";
+import {fetchMonitorias} from "../monitoria/fetchMonitores";
 
 export default function Monitorias() {
 

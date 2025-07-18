@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import {Route, Routes, useLocation} from "react-router-dom";
 import Login from "../pages/Login";
 import Aluno from "../pages/Aluno";
 import Professor from "../pages/Professor";
@@ -23,6 +23,7 @@ import EditarDisciplina from "../pages/EditarDisciplina";
 
 import Coordenadores from "../pages/Coordenadores.jsx";
 import NovoCoordenador from "../pages/NovoCoordenador.jsx";
+import EditarCoordenador from "../pages/EditarCoordenador.jsx";
 
 function AppRoutes() {
     const location = useLocation();
@@ -37,6 +38,32 @@ function AppRoutes() {
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/senhaEsquecida" element={<SenhaEsquecida />} />
+
+                <Route
+                    path="/coordenadores"
+                    element={
+                        <RotaProtegida perfilPermitido="admin">
+                            <Coordenadores />
+                        </RotaProtegida>
+                    }
+                />
+                <Route
+                    path="/coordenadores/novo"
+                    element={
+                        <RotaProtegida perfilPermitido="admin">
+                            <NovoCoordenador />
+                        </RotaProtegida>
+                    }
+                />
+                {/* ROTA ADICIONADA PARA EDIÇÃO */}
+                <Route
+                    path="/coordenadores/editar/:id"
+                    element={
+                        <RotaProtegida perfilPermitido="admin">
+                            <EditarCoordenador />
+                        </RotaProtegida>
+                    }
+                />
 
                 <Route
                     path="/aluno/:id"

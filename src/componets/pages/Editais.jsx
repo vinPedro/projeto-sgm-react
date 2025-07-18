@@ -1,7 +1,7 @@
 // pages/EditalListPage.jsx
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import EditalCard from "../edital/EditalCard";
-import { fetchEditais } from "../edital/fetchEditais";
+import {fetchEditais} from "../edital/fetchEditais";
 
 export default function Editais() {
 

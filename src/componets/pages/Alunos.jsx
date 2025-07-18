@@ -1,5 +1,5 @@
 // pages/EditalListPage.jsx
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import AlunoCard from "../aluno/AlunoCard";
 import axios from "axios";
 

@@ -1,6 +1,6 @@
 import NavBar from "../navbar/NavBar"
 import NavItem from "../navbar/NavItem"
-import { FiLogOut } from 'react-icons/fi';
+import {FiLogOut} from 'react-icons/fi';
 
 
 function Conteiner({ children }) {

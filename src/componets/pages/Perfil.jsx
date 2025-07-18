@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
 import axios from "axios";
 import Campo from "../form/Campo";
 import ButtonSubmit from "../form/Button";

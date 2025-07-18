@@ -1,9 +1,9 @@
 import Button from "../form/Button";
 import Campo from "../form/Campo";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
-import { useState } from "react";
+import {useState} from "react";
 
 export default function CadastroAluno() {
 

@@ -1,6 +1,6 @@
 import Campo from "../form/Campo";
 import ButtonSubmit from "../form/Button";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 function FormularioLogin({ onSubmit, matricula, setMatricula, senha, setSenha }) {
     const navigate = useNavigate();

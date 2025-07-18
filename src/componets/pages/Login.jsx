@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import {Link, useLocation, useNavigate} from 'react-router-dom';
 import LoginForm from '../login/LoginForm'
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 
 function Login() {
 
