@@ -1,6 +1,6 @@
-import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 import Button from "../form/Button";
 
 export default function NovaInstituicao() {
@@ -10,21 +10,21 @@ export default function NovaInstituicao() {
     cnpj: "",
     email: "",
     cursosId: [],
-    processosId: []
+    processosId: [],
   });
 
   const [cursos, setCursos] = useState([]);
   const [processos, setProcessos] = useState([]);
   const [erro, setErro] = useState(null);
 
-  // Buscar cursos e processos seletivos ao carregar
   useEffect(() => {
-    axios.get("http://localhost:8080/api/cursos")
-      .then(res => setCursos(res.data))
+    api
+      .get("/cursos")
+      .then((res) => setCursos(res.data))
       .catch(() => setErro("Erro ao carregar cursos."));
-
-    axios.get("http://localhost:8080/api/processos-seletivos")
-      .then(res => setProcessos(res.data))
+    api
+      .get("/processos-seletivos")
+      .then((res) => setProcessos(res.data))
       .catch(() => setErro("Erro ao carregar processos."));
   }, []);
 
@@ -33,16 +33,18 @@ export default function NovaInstituicao() {
   };
 
   const handleSelectMultiple = (e, field) => {
-    const selectedOptions = Array.from(e.target.selectedOptions).map(opt => Number(opt.value));
+    const selectedOptions = Array.from(e.target.selectedOptions).map((opt) =>
+      Number(opt.value)
+    );
     setForm({ ...form, [field]: selectedOptions });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    axios.post("http://localhost:8080/api/instituicoes", form)
+    api
+      .post("/instituicoes", form)
       .then(() => navigate("/instituicoes"))
-      .catch(error => {
+      .catch((error) => {
         console.error("Erro ao criar instituição:", error);
         setErro("Erro ao salvar. Verifique os dados.");
       });
@@ -50,7 +52,10 @@ export default function NovaInstituicao() {
 
   return (
     <div className="flex justify-center mt-10">
-      <form onSubmit={handleSubmit} className="border p-6 rounded w-full max-w-xl shadow">
+      <form
+        onSubmit={handleSubmit}
+        className="border p-6 rounded w-full max-w-xl shadow"
+      >
         <h2 className="text-2xl font-bold mb-4">Nova Instituição</h2>
 
         {erro && <p className="text-red-500 mb-4">{erro}</p>}
@@ -99,8 +104,10 @@ export default function NovaInstituicao() {
             value={form.cursosId}
             onChange={(e) => handleSelectMultiple(e, "cursosId")}
           >
-            {cursos.map(curso => (
-              <option key={curso.id} value={curso.id}>{curso.nome}</option>
+            {cursos.map((curso) => (
+              <option key={curso.id} value={curso.id}>
+                {curso.nome}
+              </option>
             ))}
           </select>
         </div>
@@ -113,15 +120,21 @@ export default function NovaInstituicao() {
             value={form.processosId}
             onChange={(e) => handleSelectMultiple(e, "processosId")}
           >
-            {processos.map(proc => (
-              <option key={proc.id} value={proc.id}>{proc.nome}</option>
+            {processos.map((proc) => (
+              <option key={proc.id} value={proc.id}>
+                {proc.nome}
+              </option>
             ))}
           </select>
         </div>
 
         <div className="flex gap-2">
           <Button type="submit">Salvar</Button>
-          <Button type="button" color="gray" onClick={() => navigate("/instituicoes")}>
+          <Button
+            type="button"
+            color="gray"
+            onClick={() => navigate("/instituicoes")}
+          >
             Cancelar
           </Button>
         </div>

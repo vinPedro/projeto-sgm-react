@@ -1,20 +1,9 @@
-import {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
-import axios from "axios";
-import Button from "../form/Button";
-import Campo from "../form/Campo";
-
 export default function EditarDisciplina() {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [form, setForm] = useState({
-    nome: "",
-    cargaHoraria: "",
-    professorId: "",
-    cursoId: "",
+    /* ... */
   });
-
   const [professores, setProfessores] = useState([]);
   const [cursos, setCursos] = useState([]);
   const [erros, setErros] = useState({});
@@ -24,21 +13,10 @@ export default function EditarDisciplina() {
     const fetchDados = async () => {
       try {
         const [respDisc, respProf, respCursos] = await Promise.all([
-          axios.get(`http://localhost:8080/api/disciplinas/${id}`),
-          axios.get("http://localhost:8080/api/professores"),
-          axios.get("http://localhost:8080/api/cursos"),
+          api.get(`/disciplinas/${id}`),
+          api.get("/professores"),
+          api.get("/cursos"),
         ]);
-
-        const disciplina = respDisc.data;
-        setForm({
-          nome: disciplina.nome || "",
-          cargaHoraria: disciplina.cargaHoraria || "",
-          professorId: disciplina.professorResponseDTO?.id || "",
-          cursoId: disciplina.cursoResponseDTO?.id || "",
-        });
-
-        setProfessores(respProf.data);
-        setCursos(respCursos.data);
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
         setErros({ geral: "Erro ao carregar dados da disciplina." });
@@ -79,8 +57,8 @@ export default function EditarDisciplina() {
 
     setErros({});
 
-    axios
-      .put(`http://localhost:8080/api/disciplinas/${id}`, form)
+    api
+      .put(`/disciplinas/${id}`, form)
       .then(() => navigate("/disciplinas"))
       .catch((err) => {
         console.error("Erro ao atualizar disciplina:", err);

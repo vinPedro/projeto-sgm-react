@@ -1,25 +1,21 @@
-import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 import Button from "../form/Button";
 import Campo from "../form/Campo";
 
 export default function NovaDisciplina() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    nome: "",
-    cargaHoraria: "",
-    professorId: "",
-    cursoId: "",
+    /* ... */
   });
-
   const [professores, setProfessores] = useState([]);
   const [cursos, setCursos] = useState([]);
   const [erros, setErros] = useState({});
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/api/professores")
+    api
+      .get("/professores")
       .then((res) => setProfessores(res.data))
       .catch(() =>
         setErros((prev) => ({
@@ -28,8 +24,8 @@ export default function NovaDisciplina() {
         }))
       );
 
-    axios
-      .get("http://localhost:8080/api/cursos")
+    api
+      .get("/cursos")
       .then((res) => setCursos(res.data))
       .catch(() =>
         setErros((prev) => ({ ...prev, geral: "Erro ao carregar cursos." }))
@@ -38,7 +34,6 @@ export default function NovaDisciplina() {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    // Limpa o erro do campo ao ser modificado
     if (erros[e.target.name]) {
       setErros((prev) => ({ ...prev, [e.target.name]: null }));
     }
@@ -66,8 +61,8 @@ export default function NovaDisciplina() {
 
     setErros({});
 
-    axios
-      .post("http://localhost:8080/api/disciplinas", form)
+    api
+      .post("/disciplinas", form)
       .then(() => navigate("/disciplinas"))
       .catch((error) => {
         console.error("Erro ao criar disciplina:", error);

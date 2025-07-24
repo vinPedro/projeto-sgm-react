@@ -1,10 +1,15 @@
-import {BrowserRouter as Router} from 'react-router-dom';
-import AppRoutes from './componets/rotas/AppRoutes';
+import { BrowserRouter as Router } from "react-router-dom";
+import AppRoutes from "./componets/rotas/AppRoutes";
+import { AuthProvider } from "./componets/AuthContext";
 
 function App() {
   return (
     <Router>
-      <AppRoutes />
+      <AuthProvider>
+        {" "}
+        {}
+        <AppRoutes />
+      </AuthProvider>
     </Router>
   );
 }

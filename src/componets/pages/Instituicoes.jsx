@@ -1,6 +1,6 @@
-import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 import Button from "../form/Button";
 
 export default function Instituicoes() {
@@ -15,12 +15,13 @@ export default function Instituicoes() {
 
   function carregarInstituicoes() {
     setCarregando(true);
-    axios.get("http://localhost:8080/api/instituicoes")
-      .then(response => {
+    api
+      .get("/instituicoes")
+      .then((response) => {
         setInstituicoes(response.data);
         setCarregando(false);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Erro ao buscar instituições:", error);
         setErro("Erro ao carregar instituições.");
         setCarregando(false);
@@ -29,12 +30,12 @@ export default function Instituicoes() {
 
   function deletarInstituicao(id) {
     if (window.confirm("Tem certeza que deseja excluir essa instituição?")) {
-      axios.delete(`http://localhost:8080/api/instituicoes/${id}`)
+      api
+        .delete(`/instituicoes/${id}`)
         .then(() => {
-          // Atualiza lista removendo a instituição deletada
-          setInstituicoes(instituicoes.filter(inst => inst.id !== id));
+          setInstituicoes(instituicoes.filter((inst) => inst.id !== id));
         })
-        .catch(error => {
+        .catch((error) => {
           console.error("Erro ao deletar instituição:", error);
           alert("Erro ao deletar instituição.");
         });
@@ -48,7 +49,9 @@ export default function Instituicoes() {
     <div className="p-6 max-w-4xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Instituições</h1>
-        <Button onClick={() => navigate("/instituicoes/novo")}>Criar Instituição</Button>
+        <Button onClick={() => navigate("/instituicoes/novo")}>
+          Criar Instituição
+        </Button>
       </div>
 
       {instituicoes.length === 0 ? (
@@ -60,11 +63,13 @@ export default function Instituicoes() {
               <th className="p-3 border-b border-gray-300 text-left">Nome</th>
               <th className="p-3 border-b border-gray-300 text-left">CNPJ</th>
               <th className="p-3 border-b border-gray-300 text-left">Email</th>
-              <th className="p-3 border-b border-gray-300 text-center">Ações</th>
+              <th className="p-3 border-b border-gray-300 text-center">
+                Ações
+              </th>
             </tr>
           </thead>
           <tbody>
-            {instituicoes.map(inst => (
+            {instituicoes.map((inst) => (
               <tr key={inst.id} className="hover:bg-gray-50">
                 <td className="p-3 border-b border-gray-300">{inst.nome}</td>
                 <td className="p-3 border-b border-gray-300">{inst.cnpj}</td>

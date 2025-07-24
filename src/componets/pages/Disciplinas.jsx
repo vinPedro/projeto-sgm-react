@@ -1,6 +1,6 @@
-import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 import Button from "../form/Button";
 
 export default function Disciplinas() {
@@ -15,8 +15,8 @@ export default function Disciplinas() {
 
   function carregarDisciplinas() {
     setCarregando(true);
-    axios
-      .get("http://localhost:8080/api/disciplinas")
+    api
+      .get("/disciplinas")
       .then((response) => {
         setDisciplinas(response.data);
         setCarregando(false);
@@ -30,8 +30,8 @@ export default function Disciplinas() {
 
   function deletarDisciplina(id) {
     if (window.confirm("Tem certeza que deseja excluir esta disciplina?")) {
-      axios
-        .delete(`http://localhost:8080/api/disciplinas/${id}`)
+      api
+        .delete(`/disciplinas/${id}`)
         .then(() => {
           setDisciplinas(disciplinas.filter((d) => d.id !== id));
         })

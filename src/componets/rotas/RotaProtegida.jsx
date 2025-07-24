@@ -1,28 +1,25 @@
-import {Navigate} from 'react-router-dom';
-import {jwtDecode} from 'jwt-decode';
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 
 function RotaProtegida({ children, perfilPermitido }) {
-  const token = localStorage.getItem('token');
+  const { isAuthenticated, profile, loading } = useAuth();
 
-  if (!token) {
-    return <Navigate to="/?erro=nao-autenticado" />;
+  if (loading) {
+    return <div className="text-center mt-10">Carregando...</div>;
   }
 
-  try {
-    const decoded = jwtDecode(token);
-    const perfil = decoded.perfil;
+  if (!isAuthenticated) {
+    return <Navigate to="/?erro=nao-autenticado" replace />;
+  }
 
-    const perfisPermitidos = Array.isArray(perfilPermitido)
-      ? perfilPermitido
-      : [perfilPermitido];
+  const perfisPermitidos = Array.isArray(perfilPermitido)
+    ? perfilPermitido
+    : [perfilPermitido];
 
-    if (perfisPermitidos.includes(perfil)) {
-      return children;
-    } else {
-      return <Navigate to="/?erro=acesso-negado" />;
-    }
-  } catch {
-    return <Navigate to="/?erro=token-invalido" />;
+  if (profile && perfisPermitidos.includes(profile)) {
+    return children;
+  } else {
+    return <Navigate to="/?erro=acesso-negado" replace />;
   }
 }
 

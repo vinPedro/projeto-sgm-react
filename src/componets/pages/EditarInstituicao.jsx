@@ -1,6 +1,6 @@
-import {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import api from "../services/api";
 import Button from "../form/Button";
 
 export default function EditarInstituicao() {
@@ -12,7 +12,7 @@ export default function EditarInstituicao() {
     cnpj: "",
     email: "",
     cursosId: [],
-    processosId: []
+    processosId: [],
   });
 
   const [cursos, setCursos] = useState([]);
@@ -20,14 +20,13 @@ export default function EditarInstituicao() {
   const [erro, setErro] = useState(null);
   const [carregando, setCarregando] = useState(true);
 
-  // Buscar dados da instituição e listas de cursos/processos
   useEffect(() => {
     const fetchDados = async () => {
       try {
         const [respInst, respCursos, respProcessos] = await Promise.all([
-          axios.get(`http://localhost:8080/api/instituicoes/${id}`),
-          axios.get("http://localhost:8080/api/cursos"),
-          axios.get("http://localhost:8080/api/processos-seletivos"),
+          api.get(`/instituicoes/${id}`),
+          api.get("/cursos"),
+          api.get("/processos-seletivos"),
         ]);
 
         const inst = respInst.data;
@@ -35,8 +34,12 @@ export default function EditarInstituicao() {
           nome: inst.nome || "",
           cnpj: inst.cnpj || "",
           email: inst.email || "",
-          cursosId: inst.cursosResponseDTO ? inst.cursosResponseDTO.map(c => c.id) : [],
-          processosId: inst.processosSeletivosResponseDTO ? inst.processosSeletivosResponseDTO.map(p => p.id) : []
+          cursosId: inst.cursosResponseDTO
+            ? inst.cursosResponseDTO.map((c) => c.id)
+            : [],
+          processosId: inst.processosSeletivosResponseDTO
+            ? inst.processosSeletivosResponseDTO.map((p) => p.id)
+            : [],
         });
 
         setCursos(respCursos.data);
@@ -57,16 +60,18 @@ export default function EditarInstituicao() {
   };
 
   const handleSelectMultiple = (e, field) => {
-    const selectedOptions = Array.from(e.target.selectedOptions).map(opt => Number(opt.value));
+    const selectedOptions = Array.from(e.target.selectedOptions).map((opt) =>
+      Number(opt.value)
+    );
     setForm({ ...form, [field]: selectedOptions });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    axios.put(`http://localhost:8080/api/instituicoes/${id}`, form)
+    api
+      .put(`/instituicoes/${id}`, form)
       .then(() => navigate("/instituicoes"))
-      .catch(err => {
+      .catch((err) => {
         console.error("Erro ao atualizar instituição:", err);
         setErro("Erro ao salvar. Verifique os dados.");
       });
@@ -77,7 +82,10 @@ export default function EditarInstituicao() {
 
   return (
     <div className="flex justify-center mt-10">
-      <form onSubmit={handleSubmit} className="border p-6 rounded w-full max-w-xl shadow">
+      <form
+        onSubmit={handleSubmit}
+        className="border p-6 rounded w-full max-w-xl shadow"
+      >
         <h2 className="text-2xl font-bold mb-4">Editar Instituição</h2>
 
         <div className="mb-4">
@@ -124,8 +132,10 @@ export default function EditarInstituicao() {
             value={form.cursosId}
             onChange={(e) => handleSelectMultiple(e, "cursosId")}
           >
-            {cursos.map(curso => (
-              <option key={curso.id} value={curso.id}>{curso.nome}</option>
+            {cursos.map((curso) => (
+              <option key={curso.id} value={curso.id}>
+                {curso.nome}
+              </option>
             ))}
           </select>
         </div>
@@ -138,15 +148,21 @@ export default function EditarInstituicao() {
             value={form.processosId}
             onChange={(e) => handleSelectMultiple(e, "processosId")}
           >
-            {processos.map(proc => (
-              <option key={proc.id} value={proc.id}>{proc.nome}</option>
+            {processos.map((proc) => (
+              <option key={proc.id} value={proc.id}>
+                {proc.nome}
+              </option>
             ))}
           </select>
         </div>
 
         <div className="flex gap-2">
           <Button type="submit">Salvar</Button>
-          <Button type="button" color="gray" onClick={() => navigate("/instituicoes")}>
+          <Button
+            type="button"
+            color="gray"
+            onClick={() => navigate("/instituicoes")}
+          >
             Cancelar
           </Button>
         </div>
