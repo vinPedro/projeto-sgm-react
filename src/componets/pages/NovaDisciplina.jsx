@@ -9,21 +9,10 @@ export default function NovaDisciplina() {
   const [form, setForm] = useState({
     /* ... */
   });
-  const [professores, setProfessores] = useState([]);
   const [cursos, setCursos] = useState([]);
   const [erros, setErros] = useState({});
 
   useEffect(() => {
-    api
-      .get("/professores")
-      .then((res) => setProfessores(res.data))
-      .catch(() =>
-        setErros((prev) => ({
-          ...prev,
-          geral: "Erro ao carregar professores.",
-        }))
-      );
-
     api
       .get("/cursos")
       .then((res) => setCursos(res.data))
@@ -85,7 +74,7 @@ export default function NovaDisciplina() {
         <Campo
           label="Nome da Disciplina"
           name="nome"
-          value={form.nome}
+          value={form.nome ?? ''}
           onChange={handleChange}
           required
         />
@@ -97,7 +86,7 @@ export default function NovaDisciplina() {
           label="Carga Horária"
           name="cargaHoraria"
           type="number"
-          value={form.cargaHoraria}
+          value={form.cargaHoraria ?? ''}
           onChange={handleChange}
           required
         />
@@ -106,24 +95,6 @@ export default function NovaDisciplina() {
             {erros.cargaHoraria}
           </p>
         )}
-
-        <div className="mb-4">
-          <label className="block mb-1 text-gray-600">Professor</label>
-          <select
-            name="professorId"
-            value={form.professorId}
-            onChange={handleChange}
-            className="mt-0.5 mb-3 p-[8px] border-2 border-[#ccc] focus:border-primaria focus:outline-none rounded w-full"
-            required
-          >
-            <option value="">Selecione um professor</option>
-            {professores.map((prof) => (
-              <option key={prof.id} value={prof.id}>
-                {prof.nome}
-              </option>
-            ))}
-          </select>
-        </div>
 
         <div className="mb-4">
           <label className="block mb-1 text-gray-600">Curso</label>

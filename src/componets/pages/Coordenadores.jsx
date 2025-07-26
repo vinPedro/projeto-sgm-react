@@ -70,7 +70,7 @@ export default function Coordenadores() {
                         <tr key={coord.id} className="hover:bg-gray-50">
                             <td className="p-3 border-b border-gray-300">{coord.nome}</td>
                             <td className="p-3 border-b border-gray-300">{coord.email}</td>
-                            <td className="p-3 border-b border-gray-300">{coord.cursoResponseDTO.nome}</td>
+                            {/* <td className="p-3 border-b border-gray-300">{coord.cursoResponseDTO.nome}</td> */}
                             <td className="p-3 border-b border-gray-300 text-center space-x-2">
                                 {/* BOTÃO ADICIONADO */}
                                 <Button

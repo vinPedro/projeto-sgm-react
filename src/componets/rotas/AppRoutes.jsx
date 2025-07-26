@@ -8,7 +8,7 @@ import Admin from "../pages/Admin";
 import CadastrarAluno from "../pages/CadastroAluno";
 import SenhaEsquecida from "../pages/SenhaEsquecida";
 import RotaProtegida from "./RotaProtegida";
-import Cabeca from "../layout/Conteiner";
+import Conteiner from "../layout/Conteiner";
 import Perfil from "../pages/Perfil";
 import Editais from "../pages/Editais";
 import Monitorias from "../pages/Monitorias";
@@ -34,7 +34,7 @@ function AppRoutes() {
 
     return (
         <>
-            {mostrarCon && <Cabeca />}
+            {mostrarCon && <Conteiner />}
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/senhaEsquecida" element={<SenhaEsquecida />} />
@@ -145,7 +145,7 @@ function AppRoutes() {
                 <Route
                     path="/professor"
                     element={
-                        <RotaProtegida perfilPermitido={["professor", "coordenador"]}>
+                        <RotaProtegida perfilPermitido={["professor", "coordenador", "admin"]}>
                             <Professor />
                         </RotaProtegida>
                     }
@@ -156,7 +156,7 @@ function AppRoutes() {
                 <Route
                     path="/coordenador"
                     element={
-                        <RotaProtegida perfilPermitido="coordenador">
+                        <RotaProtegida perfilPermitido={["coordenador", "admin"]}>
                             <Coordenador />
                         </RotaProtegida>
                     }
@@ -165,7 +165,7 @@ function AppRoutes() {
                 <Route
                     path="/monitor"
                     element={
-                        <RotaProtegida perfilPermitido="monitor">
+                        <RotaProtegida perfilPermitido={["monitor", "admin"]}>
                             <Monitor />
                         </RotaProtegida>
                     }

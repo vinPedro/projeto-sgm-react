@@ -16,7 +16,11 @@ function RotaProtegida({ children, perfilPermitido }) {
     ? perfilPermitido
     : [perfilPermitido];
 
-  if (profile && perfisPermitidos.includes(profile)) {
+  const possuiPermissao =
+    Array.isArray(profile) &&
+    profile.some((p) => perfisPermitidos.includes(p));
+
+  if (possuiPermissao) {
     return children;
   } else {
     return <Navigate to="/?erro=acesso-negado" replace />;

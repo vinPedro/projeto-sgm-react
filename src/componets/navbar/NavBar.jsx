@@ -8,42 +8,39 @@ function NavBar() {
   return (
     <nav>
       {/* Exibir item apenas para certos perfis */}
-      {profile === "monitor" && (
-        <ScrollContainer>
-          <NavItem to="/monitor" label="Monitoria" />
-        </ScrollContainer>
-      )}
-
-      {profile === "professor" && (
-        <ScrollContainer>
-          <NavItem to="/professor" label="Painel Professor" />
-        </ScrollContainer>
-      )}
-
-      {profile === "aluno" && (
+      {profile && (
         <ScrollContainer>
           <NavItem to="/editais" label="Editais" />
           <NavItem to="/monitorias" label="Agenda" />
-        </ScrollContainer>
-      )}
 
-      {profile === "admin" && (
-        <ScrollContainer>
-          <NavItem to="/admin" label="Painel Admin" />
-          <NavItem to="/instituicoes" label="Instituições" />
-          <NavItem to="/coordenadores" label="Coordenadores" />
-          <NavItem to="/alunos" label="Alunos" />
-          <NavItem to="/disciplinas" label="Disciplinas" />
-        </ScrollContainer>
-      )}
-
-      {profile === "coordenador" && (
-        <ScrollContainer>
-          <NavItem to="/coordenador" label="Coordenação" />
-          <NavItem to="/alunos" label="Alunos" />
-          <NavItem to="/disciplinas" label="Disciplinas" />
-          <NavItem to="/monitorias" label="Monitoria" />
-          <NavItem to="/professor" label="Painel Professor" />
+          {Array.isArray(profile) && profile.some(p => p === "admin") && (
+            <>
+              <NavItem to="/admin" label="Painel Admin" />
+              <NavItem to="/instituicoes" label="Instituições" />
+              <NavItem to="/coordenadores" label="Coordenadores" />
+              <NavItem to="/alunos" label="Alunos" />
+              <NavItem to="/disciplinas" label="Disciplinas" />
+            </>
+          )}
+          {Array.isArray(profile) && profile.some(p => p === "monitor") && (
+            <>
+              
+            </>
+          )}
+          {Array.isArray(profile) && profile.some(p => p === "professor") && (
+            <>
+              <NavItem to="/monitor" label="Monitoria" />
+            </>
+          )}
+          {Array.isArray(profile) && profile.some(p => p === "coordenador") && (
+            <>
+              <NavItem to="/coordenador" label="Coordenação" />
+              <NavItem to="/alunos" label="Alunos" />
+              <NavItem to="/disciplinas" label="Disciplinas" />
+              <NavItem to="/monitorias" label="Monitoria" />
+              <NavItem to="/professor" label="Painel Professor" />
+            </>
+          )}
         </ScrollContainer>
       )}
     </nav>

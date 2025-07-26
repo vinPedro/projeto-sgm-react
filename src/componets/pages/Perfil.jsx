@@ -10,6 +10,11 @@ export default function Perfil() {
   const [form, setForm] = useState({});
   const [editando, setEditando] = useState(false);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
   useEffect(() => {
     api
       .get(`/alunos/${id}`)

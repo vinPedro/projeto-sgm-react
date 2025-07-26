@@ -1,10 +1,17 @@
+import { useEffect, useState } from "react";
+import api from "../services/api";
+import { useNavigate, useParams } from "react-router-dom";
+import Button from "../form/Button";
+import Campo from "../form/Campo";
+
 export default function EditarDisciplina() {
   const { id } = useParams();
   const navigate = useNavigate();
+  
   const [form, setForm] = useState({
     /* ... */
   });
-  const [professores, setProfessores] = useState([]);
+
   const [cursos, setCursos] = useState([]);
   const [erros, setErros] = useState({});
   const [carregando, setCarregando] = useState(true);
@@ -12,11 +19,16 @@ export default function EditarDisciplina() {
   useEffect(() => {
     const fetchDados = async () => {
       try {
-        const [respDisc, respProf, respCursos] = await Promise.all([
+        const [respDisc, respCursos] = await Promise.all([
           api.get(`/disciplinas/${id}`),
-          api.get("/professores"),
           api.get("/cursos"),
         ]);
+        const inst = respDisc.data;
+        setForm({
+          nome: inst.nome || "",
+          cargaHoraria: inst.cargaHoraria || "",
+        });
+        setCursos(respCursos.data)
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
         setErros({ geral: "Erro ao carregar dados da disciplina." });
@@ -103,24 +115,6 @@ export default function EditarDisciplina() {
             {erros.cargaHoraria}
           </p>
         )}
-
-        <div className="mb-4">
-          <label className="block mb-1 text-gray-600">Professor</label>
-          <select
-            name="professorId"
-            value={form.professorId}
-            onChange={handleChange}
-            className="mt-0.5 mb-3 p-[8px] border-2 border-[#ccc] focus:border-primaria focus:outline-none rounded w-full"
-            required
-          >
-            <option value="">Selecione um professor</option>
-            {professores.map((prof) => (
-              <option key={prof.id} value={prof.id}>
-                {prof.nome}
-              </option>
-            ))}
-          </select>
-        </div>
 
         <div className="mb-4">
           <label className="block mb-1 text-gray-600">Curso</label>

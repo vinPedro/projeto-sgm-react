@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import Button from "../form/Button";
@@ -9,34 +9,12 @@ export default function NovaInstituicao() {
     nome: "",
     cnpj: "",
     email: "",
-    cursosId: [],
-    processosId: [],
   });
 
-  const [cursos, setCursos] = useState([]);
-  const [processos, setProcessos] = useState([]);
   const [erro, setErro] = useState(null);
-
-  useEffect(() => {
-    api
-      .get("/cursos")
-      .then((res) => setCursos(res.data))
-      .catch(() => setErro("Erro ao carregar cursos."));
-    api
-      .get("/processos-seletivos")
-      .then((res) => setProcessos(res.data))
-      .catch(() => setErro("Erro ao carregar processos."));
-  }, []);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSelectMultiple = (e, field) => {
-    const selectedOptions = Array.from(e.target.selectedOptions).map((opt) =>
-      Number(opt.value)
-    );
-    setForm({ ...form, [field]: selectedOptions });
   };
 
   const handleSubmit = (e) => {
@@ -94,38 +72,6 @@ export default function NovaInstituicao() {
             className="w-full border p-2 rounded"
             required
           />
-        </div>
-
-        <div className="mb-4">
-          <label className="block mb-1">Cursos</label>
-          <select
-            multiple
-            className="w-full border p-2 rounded h-[120px]"
-            value={form.cursosId}
-            onChange={(e) => handleSelectMultiple(e, "cursosId")}
-          >
-            {cursos.map((curso) => (
-              <option key={curso.id} value={curso.id}>
-                {curso.nome}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="mb-4">
-          <label className="block mb-1">Processos Seletivos</label>
-          <select
-            multiple
-            className="w-full border p-2 rounded h-[120px]"
-            value={form.processosId}
-            onChange={(e) => handleSelectMultiple(e, "processosId")}
-          >
-            {processos.map((proc) => (
-              <option key={proc.id} value={proc.id}>
-                {proc.nome}
-              </option>
-            ))}
-          </select>
         </div>
 
         <div className="flex gap-2">

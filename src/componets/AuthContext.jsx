@@ -5,23 +5,25 @@ import { jwtDecode } from "jwt-decode";
 
 export const AuthContext = createContext();
 
-const mapRoleToProfile = (role) => {
-  if (!role) return null;
+const mapRolesToProfiles = (roles = []) => {
+  return roles.map(({ role }) => {
+    if (!role) return null;
 
-  switch (role) {
-    case "ROLE_ADMIN":
-      return "admin";
-    case "ROLE_DOCENTE":
-      return "professor";
-    case "ROLE_DISCENTE":
-      return "aluno";
-    case "ROLE_COORDENADOR":
-      return "coordenador";
-    case "ROLE_MONITOR":
-      return "monitor";
-    default:
-      return role.toLowerCase();
-  }
+    switch (role) {
+      case "ROLE_ADMIN":
+        return "admin";
+      case "ROLE_DOCENTE":
+        return "professor";
+      case "ROLE_DISCENTE":
+        return "aluno";
+      case "ROLE_COORDENADOR":
+        return "coordenador";
+      case "ROLE_MONITOR":
+        return "monitor";
+      default:
+        return role.toLowerCase();
+    }
+  });
 };
 
 export const AuthProvider = ({ children }) => {
@@ -49,7 +51,7 @@ export const AuthProvider = ({ children }) => {
         const parsedUser = JSON.parse(storedUser);
         setToken(storedToken);
         setUser(parsedUser);
-        setProfile(mapRoleToProfile(parsedUser.roles[0]?.role));
+        setProfile(mapRolesToProfiles(parsedUser.roles[0]?.role));
       } catch (error) {
         localStorage.clear();
       }
@@ -69,25 +71,16 @@ export const AuthProvider = ({ children }) => {
       );
 
       const { token: new_token, user: userData } = response.data;
-      const userRole = userData.roles[0]?.role;
 
       localStorage.setItem("token", new_token);
       localStorage.setItem("user", JSON.stringify(userData));
 
       setToken(new_token);
       setUser(userData);
-      const userProfile = mapRoleToProfile(userRole);
-      setProfile(userProfile);
+      const userProfiles = mapRolesToProfiles(userData.roles);
+      setProfile(userProfiles);
 
-      const rotasPorPerfil = {
-        aluno: "/editais",
-        professor: "/professor",
-        monitor: "/monitor",
-        coordenador: "/coordenador",
-        admin: "/admin",
-      };
-
-      navigate(rotasPorPerfil[userProfile] || "/");
+      navigate("/editais");
     } catch (error) {
       console.error("Falha no login:", error);
       if (
