@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import * as service from "../services/coordenadorService";
-import Button from "../form/Button.jsx";
-import Campo from "../form/Campo.jsx";
+import * as service from "../../services/coordenadorService";
+import Button from "../../form/Button.jsx";
+import Campo from "../../form/Campo.jsx";
 
 export default function EditarCoordenador() {
     const navigate = useNavigate();

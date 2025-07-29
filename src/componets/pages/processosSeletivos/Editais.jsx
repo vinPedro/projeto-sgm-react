@@ -1,7 +1,8 @@
 // pages/EditalListPage.jsx
 import React, {useEffect, useState} from "react";
-import EditalCard from "../edital/EditalCard";
-import {fetchEditais} from "../edital/fetchEditais";
+import EditalCard from "../../edital/EditalCard";
+import {fetchEditais} from "../../edital/fetchEditais";
+
 
 export default function Editais() {
 
@@ -17,6 +18,8 @@ export default function Editais() {
 
     loadEditais();
   }, []);
+
+  if (loading) return <p>Carregando...</p>;
 
   return (
     <div className="w-full flex flex-col justify-start items-center">

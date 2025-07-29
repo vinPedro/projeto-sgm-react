@@ -1,7 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import api from "../services/api";
-import Button from "../form/Button";
+import Button from "../../form/Button";
+import * as AlunoService from "../../services/AlunoService";
+
 
 export default function Aluno() {
   const navigate = useNavigate();
@@ -10,8 +11,8 @@ export default function Aluno() {
   const [erro, setErro] = useState(null);
 
   useEffect(() => {
-    api
-      .get(`/alunos/${id}`)
+    
+      AlunoService.getAlunoById(id)
       .then((response) => {
         setAluno(response.data);
       })
@@ -22,8 +23,7 @@ export default function Aluno() {
   }, [id]);
 
   const deletar = () => {
-    api
-      .delete(`/alunos/${id}`)
+    AlunoService.deleteAluno(id)
       .then(() => {
         navigate(-1);
       })
@@ -69,7 +69,7 @@ export default function Aluno() {
             <Button color="red" type="button" onClick={deletar}>
               Deletar
             </Button>
-            <Button type="button" onClick={() => navigate(`/perfil/${id}`)}>
+            <Button type="button" onClick={() => navigate(`/editarAluno/${id}`)}>
               Editar
             </Button>
           </div>

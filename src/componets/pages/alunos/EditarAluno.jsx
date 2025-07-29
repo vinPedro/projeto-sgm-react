@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import api from "../services/api";
-import Campo from "../form/Campo";
-import ButtonSubmit from "../form/Button";
+import Campo from "../../form/Campo";
+import ButtonSubmit from "../../form/Button";
+import * as AlunoService from "../../services/AlunoService";
 
-export default function Perfil() {
+export default function EditarAluno() {
   const { id } = useParams();
   const [perfil, setPerfil] = useState(null);
   const [form, setForm] = useState({});
   const [editando, setEditando] = useState(false);
 
   useEffect(() => {
-    api
-      .get(`/alunos/${id}`)
+    AlunoService.getAlunoById(id)
       .then((res) => {
         setPerfil(res.data);
         setForm(res.data);
@@ -22,9 +21,13 @@ export default function Perfil() {
       });
   }, [id]);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
   const salvar = () => {
-    api
-      .put(`/alunos/${id}`, form)
+    AlunoService.updateAluno(id, form)
       .then((res) => {
         setPerfil(res.data);
         setEditando(false);

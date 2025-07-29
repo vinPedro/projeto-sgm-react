@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import AlunoCard from "../aluno/AlunoCard";
-import api from "../services/api";
+import AlunoCard from "../../aluno/AlunoCard";
+import * as AlunoService from "../../services/AlunoService";
 
 export default function Alunos() {
+
   const [alunos, setAlunos] = useState([]);
   const [erro, setErro] = useState(null);
 
   useEffect(() => {
-    api
-      .get(`/alunos`)
+    AlunoService.getAlunos()
       .then((response) => {
         setAlunos(response.data);
       })

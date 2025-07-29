@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../services/api";
-import Button from "../form/Button";
+import Button from "../../form/Button";
+import * as InstituicaoService from "../../services/InstituicaoService";
 
 export default function Instituicoes() {
   const navigate = useNavigate();
@@ -15,8 +15,7 @@ export default function Instituicoes() {
 
   function carregarInstituicoes() {
     setCarregando(true);
-    api
-      .get("/instituicoes")
+    InstituicaoService.getInstituicoes()
       .then((response) => {
         setInstituicoes(response.data);
         setCarregando(false);
@@ -30,8 +29,7 @@ export default function Instituicoes() {
 
   function deletarInstituicao(id) {
     if (window.confirm("Tem certeza que deseja excluir essa instituição?")) {
-      api
-        .delete(`/instituicoes/${id}`)
+      InstituicaoService.deleteInstituicao(id)
         .then(() => {
           setInstituicoes(instituicoes.filter((inst) => inst.id !== id));
         })

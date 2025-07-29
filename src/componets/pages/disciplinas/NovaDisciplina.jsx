@@ -1,31 +1,20 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../services/api";
-import Button from "../form/Button";
-import Campo from "../form/Campo";
+import * as DisciplinaService from "../../services/DisciplinaService"
+import Button from "../../form/Button";
+import Campo from "../../form/Campo";
 
 export default function NovaDisciplina() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     /* ... */
   });
-  const [professores, setProfessores] = useState([]);
   const [cursos, setCursos] = useState([]);
   const [erros, setErros] = useState({});
 
   useEffect(() => {
-    api
-      .get("/professores")
-      .then((res) => setProfessores(res.data))
-      .catch(() =>
-        setErros((prev) => ({
-          ...prev,
-          geral: "Erro ao carregar professores.",
-        }))
-      );
 
-    api
-      .get("/cursos")
+    DisciplinaService.getCursos()
       .then((res) => setCursos(res.data))
       .catch(() =>
         setErros((prev) => ({ ...prev, geral: "Erro ao carregar cursos." }))
@@ -61,8 +50,7 @@ export default function NovaDisciplina() {
 
     setErros({});
 
-    api
-      .post("/disciplinas", form)
+    DisciplinaService.createDisciplina(form)
       .then(() => navigate("/disciplinas"))
       .catch((error) => {
         console.error("Erro ao criar disciplina:", error);
@@ -85,7 +73,7 @@ export default function NovaDisciplina() {
         <Campo
           label="Nome da Disciplina"
           name="nome"
-          value={form.nome}
+          value={form.nome ?? ""}
           onChange={handleChange}
           required
         />
@@ -97,7 +85,7 @@ export default function NovaDisciplina() {
           label="Carga Horária"
           name="cargaHoraria"
           type="number"
-          value={form.cargaHoraria}
+          value={form.cargaHoraria ?? ""}
           onChange={handleChange}
           required
         />
@@ -106,24 +94,6 @@ export default function NovaDisciplina() {
             {erros.cargaHoraria}
           </p>
         )}
-
-        <div className="mb-4">
-          <label className="block mb-1 text-gray-600">Professor</label>
-          <select
-            name="professorId"
-            value={form.professorId}
-            onChange={handleChange}
-            className="mt-0.5 mb-3 p-[8px] border-2 border-[#ccc] focus:border-primaria focus:outline-none rounded w-full"
-            required
-          >
-            <option value="">Selecione um professor</option>
-            {professores.map((prof) => (
-              <option key={prof.id} value={prof.id}>
-                {prof.nome}
-              </option>
-            ))}
-          </select>
-        </div>
 
         <div className="mb-4">
           <label className="block mb-1 text-gray-600">Curso</label>

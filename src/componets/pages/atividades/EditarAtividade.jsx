@@ -1,22 +1,34 @@
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import Button from "../../form/Button";
+import Campo from "../../form/Campo";
+import * as AtividadeService from "../../services/AtividadeService";
+
 export default function EditarDisciplina() {
   const { id } = useParams();
   const navigate = useNavigate();
+  
   const [form, setForm] = useState({
     /* ... */
   });
-  const [professores, setProfessores] = useState([]);
-  const [cursos, setCursos] = useState([]);
+
+  const [monitorias, setMonitorias] = useState([]);
   const [erros, setErros] = useState({});
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
     const fetchDados = async () => {
       try {
-        const [respDisc, respProf, respCursos] = await Promise.all([
-          api.get(`/disciplinas/${id}`),
-          api.get("/professores"),
-          api.get("/cursos"),
+        const [respAtiv, respMonitorias] = await Promise.all([
+          AtividadeService.getAtividadeById(id),
+          AtividadeService.getMonitorias(),
         ]);
+        const inst = respAtiv.data;
+        setForm({
+          dataHora: inst.dataHora || "",
+          descricao: inst.descricao || "",
+        });
+        setMonitorias(respMonitorias.data)
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
         setErros({ geral: "Erro ao carregar dados da disciplina." });
@@ -37,11 +49,11 @@ export default function EditarDisciplina() {
 
   const validarFormulario = () => {
     const novosErros = {};
-    if (!form.nome.trim()) {
-      novosErros.nome = "O campo Nome é obrigatório.";
+    if (!form.dataHora.trim()) {
+      novosErros.dataHora = "O campo Data-Hora é obrigatório.";
     }
-    if (!form.cargaHoraria) {
-      novosErros.cargaHoraria = "O campo Carga Horária é obrigatório.";
+    if (!form.descricao) {
+      novosErros.descricao = "O campo Descrição é obrigatório.";
     }
     return novosErros;
   };
@@ -57,11 +69,10 @@ export default function EditarDisciplina() {
 
     setErros({});
 
-    api
-      .put(`/disciplinas/${id}`, form)
-      .then(() => navigate("/disciplinas"))
+    AtividadeService.updateAtividade(id, form)
+      .then(() => navigate(-1))
       .catch((err) => {
-        console.error("Erro ao atualizar disciplina:", err);
+        console.error("Erro ao atualizar atividade:", err);
         setErros({ geral: "Erro ao salvar. Verifique os dados." });
       });
   };
@@ -77,64 +88,46 @@ export default function EditarDisciplina() {
         onSubmit={handleSubmit}
         className="border p-6 rounded w-full max-w-xl shadow-lg"
       >
-        <h2 className="text-2xl font-bold mb-4">Editar Disciplina</h2>
+        <h2 className="text-2xl font-bold mb-4">Editar Atividade</h2>
 
         <Campo
-          label="Nome da Disciplina"
-          name="nome"
-          value={form.nome}
+          label="Data e Hora"
+          name="dataHora"
+          type="datetime-local"
+          value={form.dataHora}
           onChange={handleChange}
           required
         />
-        {erros.nome && (
-          <p className="text-red-500 text-sm -mt-2 mb-2">{erros.nome}</p>
+        {erros.dataHora && (
+          <p className="text-red-500 text-sm -mt-2 mb-2">{erros.dataHora}</p>
         )}
 
         <Campo
-          label="Carga Horária"
-          name="cargaHoraria"
-          type="number"
-          value={form.cargaHoraria}
+          label="Descricao"
+          name="descricao"
+          value={form.descricao}
           onChange={handleChange}
           required
         />
-        {erros.cargaHoraria && (
+        {erros.descricao && (
           <p className="text-red-500 text-sm -mt-2 mb-2">
-            {erros.cargaHoraria}
+            {erros.descricao}
           </p>
         )}
 
         <div className="mb-4">
-          <label className="block mb-1 text-gray-600">Professor</label>
+          <label className="block mb-1 text-gray-600">Monitorias</label>
           <select
-            name="professorId"
-            value={form.professorId}
+            name="monitoriaId"
+            value={form.monitoriaId}
             onChange={handleChange}
             className="mt-0.5 mb-3 p-[8px] border-2 border-[#ccc] focus:border-primaria focus:outline-none rounded w-full"
             required
           >
-            <option value="">Selecione um professor</option>
-            {professores.map((prof) => (
-              <option key={prof.id} value={prof.id}>
-                {prof.nome}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="mb-4">
-          <label className="block mb-1 text-gray-600">Curso</label>
-          <select
-            name="cursoId"
-            value={form.cursoId}
-            onChange={handleChange}
-            className="mt-0.5 mb-3 p-[8px] border-2 border-[#ccc] focus:border-primaria focus:outline-none rounded w-full"
-            required
-          >
-            <option value="">Selecione um curso</option>
-            {cursos.map((curso) => (
-              <option key={curso.id} value={curso.id}>
-                {curso.nome}
+            <option value="">Selecione uma Monitoria</option>
+            {monitorias.map((monitoria) => (
+              <option key={monitoria.id} value={monitoria.id}>
+                {monitoria.disciplinaResponseDTO.nome}
               </option>
             ))}
           </select>

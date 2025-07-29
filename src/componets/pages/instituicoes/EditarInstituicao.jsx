@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import api from "../services/api";
-import Button from "../form/Button";
+import Button from "../../form/Button";
+import * as InstituicaoSevice from "../../services/InstituicaoService"
 
 export default function EditarInstituicao() {
   const { id } = useParams();
@@ -11,22 +11,16 @@ export default function EditarInstituicao() {
     nome: "",
     cnpj: "",
     email: "",
-    cursosId: [],
-    processosId: [],
   });
 
-  const [cursos, setCursos] = useState([]);
-  const [processos, setProcessos] = useState([]);
   const [erro, setErro] = useState(null);
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
     const fetchDados = async () => {
       try {
-        const [respInst, respCursos, respProcessos] = await Promise.all([
-          api.get(`/instituicoes/${id}`),
-          api.get("/cursos"),
-          api.get("/processos-seletivos"),
+        const [respInst] = await Promise.all([
+          InstituicaoSevice.getInstituicaoById(id),
         ]);
 
         const inst = respInst.data;
@@ -34,16 +28,7 @@ export default function EditarInstituicao() {
           nome: inst.nome || "",
           cnpj: inst.cnpj || "",
           email: inst.email || "",
-          cursosId: inst.cursosResponseDTO
-            ? inst.cursosResponseDTO.map((c) => c.id)
-            : [],
-          processosId: inst.processosSeletivosResponseDTO
-            ? inst.processosSeletivosResponseDTO.map((p) => p.id)
-            : [],
         });
-
-        setCursos(respCursos.data);
-        setProcessos(respProcessos.data);
         setCarregando(false);
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
@@ -59,17 +44,9 @@ export default function EditarInstituicao() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSelectMultiple = (e, field) => {
-    const selectedOptions = Array.from(e.target.selectedOptions).map((opt) =>
-      Number(opt.value)
-    );
-    setForm({ ...form, [field]: selectedOptions });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    api
-      .put(`/instituicoes/${id}`, form)
+    InstituicaoSevice.updateInstituicao(id, form)
       .then(() => navigate("/instituicoes"))
       .catch((err) => {
         console.error("Erro ao atualizar instituição:", err);
@@ -122,38 +99,6 @@ export default function EditarInstituicao() {
             className="w-full border p-2 rounded"
             required
           />
-        </div>
-
-        <div className="mb-4">
-          <label className="block mb-1">Cursos</label>
-          <select
-            multiple
-            className="w-full border p-2 rounded h-[120px]"
-            value={form.cursosId}
-            onChange={(e) => handleSelectMultiple(e, "cursosId")}
-          >
-            {cursos.map((curso) => (
-              <option key={curso.id} value={curso.id}>
-                {curso.nome}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="mb-4">
-          <label className="block mb-1">Processos Seletivos</label>
-          <select
-            multiple
-            className="w-full border p-2 rounded h-[120px]"
-            value={form.processosId}
-            onChange={(e) => handleSelectMultiple(e, "processosId")}
-          >
-            {processos.map((proc) => (
-              <option key={proc.id} value={proc.id}>
-                {proc.nome}
-              </option>
-            ))}
-          </select>
         </div>
 
         <div className="flex gap-2">
