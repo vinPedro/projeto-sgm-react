@@ -6,16 +6,16 @@ export const getCursos = () => {
   return api.get(API_URL);
 };
 
-export const createCurso = (disciplinaData) => {
-  return api.post(API_URL, disciplinaData);
+export const createCurso = (cursoData) => {
+  return api.post(API_URL, cursoData);
 };
 
 export const getCursoById = (id) => {
   return api.get(`${API_URL}/${id}`);
 };
 
-export const updateCurso = (id, disciplinaData) => {
-  return api.put(`${API_URL}/${id}`, disciplinaData);
+export const updateCurso = (id, cursoData) => {
+  return api.put(`${API_URL}/${id}`, cursoData);
 };
 
 export const deleteCurso = (id) => {

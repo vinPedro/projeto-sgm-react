@@ -1,70 +1,70 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../form/Button";
-import * as CursoService from "../../services/CursoService";
+import * as ProcessoService from "../../services/ProcessoSeletivoService";
 
-export default function Cursos() {
+export default function ProcessosSeletivos() {
   const navigate = useNavigate();
-  const [cursos, setCursos] = useState([]);
+  const [processos, setProcessos] = useState([]);
   const [erro, setErro] = useState(null);
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
-    carregarCursos();
+    carregarProcessos();
   }, []);
 
-  function carregarCursos() {
+  function carregarProcessos() {
     setCarregando(true);
-    CursoService.getCursos()
+    ProcessoService.getProcessos()
       .then((response) => {
-        setCursos(response.data);
+        setProcessos(response.data);
         setCarregando(false);
       })
       .catch((error) => {
-        console.error("Erro ao buscar cursos:", error);
-        setErro("Erro ao carregar cursos.");
+        console.error("Erro ao buscar processos:", error);
+        setErro("Erro ao carregar processos.");
         setCarregando(false);
       });
   }
 
-  function deletarCurso(id) {
-    if (window.confirm("Tem certeza que deseja excluir este curso?")) {
-      CursoService.deleteCurso(id)
+  function deletarProcesso(id) {
+    if (window.confirm("Tem certeza que deseja excluir este processo?")) {
+      ProcessoService.deleteProcesso(id)
         .then(() => {
-          setCursos(cursos.filter((d) => d.id !== id));
+          setProcessos(processos.filter((d) => d.id !== id));
         })
         .catch((error) => {
-          console.error("Erro ao deletar curso:", error);
-          alert("Erro ao deletar curso.");
+          console.error("Erro ao deletar processo:", error);
+          alert("Erro ao deletar ptocesso.");
         });
     }
   }
 
   if (carregando)
-    return <p className="text-center mt-4">Carregando cursos...</p>;
+    return <p className="text-center mt-4">Carregando Processos...</p>;
   if (erro) return <p className="text-red-500 text-center mt-4">{erro}</p>;
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Cursos</h1>
-        <Button onClick={() => navigate("/cursos/novo")}>
-          Criar Cursos
+        <h1 className="text-3xl font-bold">Processos Seletivos</h1>
+        <Button onClick={() => navigate("/processos/novo")}>
+          Criar Processo
         </Button>
       </div>
 
-      {cursos.length === 0 ? (
-        <p>Nenhum Curso cadastrado.</p>
+      {processos.length === 0 ? (
+        <p>Nenhum Processo cadastrado.</p>
       ) : (
         <table className="min-w-full border border-gray-300 rounded">
           <thead className="bg-gray-100">
             <tr>
-              <th className="p-3 border-b border-gray-300 text-left">Nome</th>
+              <th className="p-3 border-b border-gray-300 text-left">Número</th>
               <th className="p-3 border-b border-gray-300 text-left">
-                Nível
+                Início
               </th>
               <th className="p-3 border-b border-gray-300 text-left">
-                Duração
+                Fim
               </th>
               <th className="p-3 border-b border-gray-300 text-left">Instituição</th>
               <th className="p-3 border-b border-gray-300 text-center">
@@ -73,28 +73,28 @@ export default function Cursos() {
             </tr>
           </thead>
           <tbody>
-            {cursos.map((curso) => (
-              <tr key={curso.id} className="hover:bg-gray-50">
-                <td className="p-3 border-b border-gray-300">{curso.nome}</td>
+            {processos.map((processo) => (
+              <tr key={processo.id} className="hover:bg-gray-50">
+                <td className="p-3 border-b border-gray-300">{processo.numero}</td>
                 <td className="p-3 border-b border-gray-300">
-                  {curso.nivel}
+                  {processo.inicio}
                 </td>
                 <td className="p-3 border-b border-gray-300">
-                  {curso.duracao ?? "N/A"}
+                  {processo.fim}
                 </td>
                 <td className="p-3 border-b border-gray-300">
-                  {curso.instituicaoResponseDTO?.nome ?? "N/A"}
+                  {processo.instituicaoResponseDTO?.nome}
                 </td>
 
                 <td className="p-3 border-b border-gray-300 text-center space-x-2">
                   <Button
-                    onClick={() => navigate(`/cursos/editar/${curso.id}`)}
+                    onClick={() => navigate(`/processos/editar/${processo.id}`)}
                     color="color"
                   >
                     Editar
                   </Button>
                   <Button
-                    onClick={() => deletarCurso(curso.id)}
+                    onClick={() => deletarProcesso(processo.id)}
                     color="red"
                   >
                     Excluir

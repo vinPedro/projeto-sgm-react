@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import * as CursoService from "../../services/CursoService";
+import * as ProcessoService from "../../services/ProcessoSeletivoService";
 import Button from "../../form/Button";
 import Campo from "../../form/Campo";
 
@@ -10,19 +10,14 @@ export default function NovaCurso() {
     /* ... */
   });
   const [instituicoes, setInstituicoes] = useState([]);
-  const [niveis, setNiveis] = useState([]);
   const [erros, setErros] = useState({});
 
   useEffect(() => {
-   CursoService.getInstituicoes()
+   ProcessoService.getInstituicoes()
       .then((res) => setInstituicoes(res.data))
       .catch(() =>
         setErros((prev) => ({ ...prev, geral: "Erro ao carregar instituições." }))
       );
-  }, []);
-
-  useEffect(() => {
-      setNiveis(CursoService.getNiveis())
   }, []);
 
   const handleChange = (e) => {
@@ -34,11 +29,14 @@ export default function NovaCurso() {
 
   const validarFormulario = () => {
     const novosErros = {};
-    if (!form.nome.trim()) {
-      novosErros.nome = "O campo Nome é obrigatório.";
+    if (!form.numero.trim()) {
+      novosErros.numero = "O campo Número é obrigatório.";
     }
-    if (!form.duracao) {
-      novosErros.duracao = "O campo Duracao é obrigatório.";
+    if (!form.inicio.trim()) {
+      novosErros.inicio = "O campo Início é obrigatório.";
+    }
+    if (!form.fim) {
+      novosErros.fim = "O campo Fim é obrigatório.";
     }
     return novosErros;
   };
@@ -54,10 +52,10 @@ export default function NovaCurso() {
 
     setErros({});
 
-    CursoService.createCurso(form)
+    ProcessoService.createProcesso(form)
       .then(() => navigate(-1))
       .catch((error) => {
-        console.error("Erro ao criar curso:", error);
+        console.error("Erro ao criar processo:", error);
         setErros({ geral: "Erro ao salvar. Verifique os dados." });
       });
   };
@@ -68,54 +66,50 @@ export default function NovaCurso() {
         onSubmit={handleSubmit}
         className="border p-6 rounded w-full max-w-xl shadow-lg"
       >
-        <h2 className="text-2xl font-bold mb-4">Novo Curso</h2>
+        <h2 className="text-2xl font-bold mb-4">Novo Processo</h2>
 
         {erros.geral && (
           <p className="text-red-500 mb-4 text-center">{erros.geral}</p>
         )}
 
         <Campo
-          label="Nome do cuso"
-          name="nome"
-          value={form.nome ?? ''}
+          label="Número do Processo"
+          name="numero"
+          value={form.numero ?? ''}
           onChange={handleChange}
           required
         />
-        {erros.nome && (
-          <p className="text-red-500 text-sm -mt-2 mb-2">{erros.nome}</p>
+        {erros.numero && (
+          <p className="text-red-500 text-sm -mt-2 mb-2">{erros.numero}</p>
         )}
 
         <Campo
-          label="Duração"
-          name="duracao"
-          type="number"
-          value={form.duracao ?? ''}
+          label="Data de Início"
+          name="inicio"
+          type="date"
+          value={form.inicio ?? ''}
           onChange={handleChange}
           required
         />
-        {erros.duracao && (
+        {erros.inicio && (
           <p className="text-red-500 text-sm -mt-2 mb-2">
-            {erros.duracao}
+            {erros.inicio}
           </p>
         )}
 
-        <div className="mb-4">
-          <label className="block mb-1 text-gray-600">Nível</label>
-          <select
-            name="nivelString"
-            value={form.nivelString}
-            onChange={handleChange}
-            className="mt-0.5 mb-3 p-[8px] border-2 border-[#ccc] focus:border-primaria focus:outline-none rounded w-full"
-            required
-          >
-            <option value="">Selecione um nível</option>
-            {niveis.map((nivel) => (
-              <option key={nivel.value} value={nivel.value}>
-                {nivel.label}
-              </option>
-            ))}
-          </select>
-        </div>
+        <Campo
+          label="Data de Fim"
+          name="fim"
+          type="date"
+          value={form.fim ?? ''}
+          onChange={handleChange}
+          required
+        />
+        {erros.fim && (
+          <p className="text-red-500 text-sm -mt-2 mb-2">
+            {erros.fim}
+          </p>
+        )}
 
         <div className="mb-4">
           <label className="block mb-1 text-gray-600">Instituição</label>

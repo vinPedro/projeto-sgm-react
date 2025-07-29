@@ -4,7 +4,7 @@ import Button from "../../form/Button";
 import Campo from "../../form/Campo";
 import * as CursoService from "../../services/CursoService";
 
-export default function EditarDisciplina() {
+export default function EditarCurso() {
   const { id } = useParams();
   const navigate = useNavigate();
   

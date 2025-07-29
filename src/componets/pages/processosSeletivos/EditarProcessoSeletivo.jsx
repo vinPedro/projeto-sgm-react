@@ -1,29 +1,45 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import * as CursoService from "../../services/CursoService";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../form/Button";
 import Campo from "../../form/Campo";
+import * as ProcessoService from "../../services/ProcessoSeletivoService";
 
-export default function NovaCurso() {
+export default function EditarCurso() {
+  const { id } = useParams();
   const navigate = useNavigate();
+  
   const [form, setForm] = useState({
     /* ... */
   });
+
   const [instituicoes, setInstituicoes] = useState([]);
-  const [niveis, setNiveis] = useState([]);
   const [erros, setErros] = useState({});
+  const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
-   CursoService.getInstituicoes()
-      .then((res) => setInstituicoes(res.data))
-      .catch(() =>
-        setErros((prev) => ({ ...prev, geral: "Erro ao carregar instituições." }))
-      );
-  }, []);
+    const fetchDados = async () => {
+      try {
+        const [respCurso, respInst] = await Promise.all([
+          ProcessoService.getProcessoById(id),
+          ProcessoService.getInstituicoes(),
+        ]);
+        const inst = respCurso.data;
+        setForm({
+          inicio: inst.inicio|| "",
+          fim: inst.fim || "",
+          numero: inst.numero || "",
+        });
+        setInstituicoes(respInst.data);
+      } catch (error) {
+        console.error("Erro ao carregar dados:", error);
+        setErros({ geral: "Erro ao carregar dados do Processo." });
+      } finally {
+        setCarregando(false);
+      }
+    };
 
-  useEffect(() => {
-      setNiveis(CursoService.getNiveis())
-  }, []);
+    fetchDados();
+  }, [id]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -34,11 +50,14 @@ export default function NovaCurso() {
 
   const validarFormulario = () => {
     const novosErros = {};
-    if (!form.nome.trim()) {
-      novosErros.nome = "O campo Nome é obrigatório.";
+    if (!form.numero.trim()) {
+      novosErros.numero = "O campo Número é obrigatório.";
     }
-    if (!form.duracao) {
-      novosErros.duracao = "O campo Duracao é obrigatório.";
+    if (!form.inicio.trim()) {
+      novosErros.inicio = "O campo Início é obrigatório.";
+    }
+    if (!form.fim) {
+      novosErros.fim = "O campo Fim é obrigatório.";
     }
     return novosErros;
   };
@@ -54,13 +73,18 @@ export default function NovaCurso() {
 
     setErros({});
 
-    CursoService.createCurso(form)
+    ProcessoService.updateProcesso(id, form)
       .then(() => navigate(-1))
-      .catch((error) => {
-        console.error("Erro ao criar curso:", error);
+      .catch((err) => {
+        console.error("Erro ao atualizar Processo:", err);
         setErros({ geral: "Erro ao salvar. Verifique os dados." });
       });
   };
+
+  if (carregando)
+    return <p className="text-center mt-4">Carregando dados...</p>;
+  if (erros.geral && !carregando)
+    return <p className="text-red-500 text-center mt-4">{erros.geral}</p>;
 
   return (
     <div className="flex justify-center mt-10">
@@ -68,54 +92,46 @@ export default function NovaCurso() {
         onSubmit={handleSubmit}
         className="border p-6 rounded w-full max-w-xl shadow-lg"
       >
-        <h2 className="text-2xl font-bold mb-4">Novo Curso</h2>
-
-        {erros.geral && (
-          <p className="text-red-500 mb-4 text-center">{erros.geral}</p>
-        )}
+        <h2 className="text-2xl font-bold mb-4">Editar Processo</h2>
 
         <Campo
-          label="Nome do cuso"
-          name="nome"
-          value={form.nome ?? ''}
+          label="Número do Processo"
+          name="numero"
+          value={form.numero ?? ''}
           onChange={handleChange}
           required
         />
-        {erros.nome && (
-          <p className="text-red-500 text-sm -mt-2 mb-2">{erros.nome}</p>
+        {erros.numero && (
+          <p className="text-red-500 text-sm -mt-2 mb-2">{erros.numero}</p>
         )}
 
         <Campo
-          label="Duração"
-          name="duracao"
-          type="number"
-          value={form.duracao ?? ''}
+          label="Data de Início"
+          name="inicio"
+          type="date"
+          value={form.inicio ?? ''}
           onChange={handleChange}
           required
         />
-        {erros.duracao && (
+        {erros.inicio && (
           <p className="text-red-500 text-sm -mt-2 mb-2">
-            {erros.duracao}
+            {erros.inicio}
           </p>
         )}
 
-        <div className="mb-4">
-          <label className="block mb-1 text-gray-600">Nível</label>
-          <select
-            name="nivelString"
-            value={form.nivelString}
-            onChange={handleChange}
-            className="mt-0.5 mb-3 p-[8px] border-2 border-[#ccc] focus:border-primaria focus:outline-none rounded w-full"
-            required
-          >
-            <option value="">Selecione um nível</option>
-            {niveis.map((nivel) => (
-              <option key={nivel.value} value={nivel.value}>
-                {nivel.label}
-              </option>
-            ))}
-          </select>
-        </div>
+        <Campo
+          label="Data de Fim"
+          name="fim"
+          type="date"
+          value={form.fim ?? ''}
+          onChange={handleChange}
+          required
+        />
+        {erros.fim && (
+          <p className="text-red-500 text-sm -mt-2 mb-2">
+            {erros.fim}
+          </p>
+        )}
 
         <div className="mb-4">
           <label className="block mb-1 text-gray-600">Instituição</label>
@@ -143,7 +159,7 @@ export default function NovaCurso() {
           >
             Cancelar
           </Button>
-          <Button type="submit">Salvar</Button>
+          <Button type="submit">Salvar Alterações</Button>
         </div>
       </form>
     </div>

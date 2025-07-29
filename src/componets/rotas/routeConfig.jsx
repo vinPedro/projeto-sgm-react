@@ -4,7 +4,6 @@ import SenhaEsquecida from "../pages/SenhaEsquecida";
 import CadastrarAluno from "../pages/alunos/CadastroAluno";
 import Aluno from "../pages/alunos/Aluno";
 import EditarAluno from "../pages/alunos/EditarAluno";
-import Editais from "../pages/processosSeletivos/Editais";
 import Monitorias from "../pages/monitorias/Monitorias";
 import Alunos from "../pages/alunos/Alunos";
 import Professor from "../pages/professores/Professor";
@@ -29,6 +28,11 @@ import EditarAtividade from "../pages/atividades/EditarAtividade";
 import Cursos from "../pages/cursos/Cursos";
 import NovoCurso from "../pages/cursos/NovoCurso";
 import EditarCurso from "../pages/cursos/EditarCurso";
+import NovaMonitoria from "../pages/monitorias/NovaMonitoria";
+import EditarMonitoria from "../pages/monitorias/EditarMonitoria";
+import Processos from "../pages/processosSeletivos/ProcessosSeletivos";
+import NovoProcesso from "../pages/processosSeletivos/NovoProcessoSeletivo";
+import EditarProcesso from "../pages/processosSeletivos/EditarProcessoSeletivo";
 
 
 export const routeConfig = [
@@ -47,18 +51,6 @@ export const routeConfig = [
   {
     path: "/editarAluno/:id",
     element: <EditarAluno />,
-    isPrivate: true,
-    roles: ["aluno", "monitor", "professor", "coordenador", "admin"],
-  },
-  {
-    path: "/editais",
-    element: <Editais />,
-    isPrivate: true,
-    roles: ["aluno", "monitor", "professor", "coordenador", "admin"],
-  },
-  {
-    path: "/monitorias",
-    element: <Monitorias />,
     isPrivate: true,
     roles: ["aluno", "monitor", "professor", "coordenador", "admin"],
   },
@@ -203,6 +195,42 @@ export const routeConfig = [
   {
     path: "/cursos/editar/:id",
     element: <EditarCurso />,
+    isPrivate: true,
+    roles: ["admin"],
+  },
+  {
+    path: "/monitorias",
+    element: <Monitorias />,
+    isPrivate: true,
+    roles: ["admin"],
+  },
+  {
+    path: "/monitorias/novo",
+    element: <NovaMonitoria />,
+    isPrivate: true,
+    roles: ["admin"],
+  },
+  {
+    path: "/monitoria/editar/:id",
+    element: <EditarMonitoria />,
+    isPrivate: true,
+    roles: ["admin"],
+  },
+  {
+    path: "/processos",
+    element: <Processos />,
+    isPrivate: true,
+    roles: ["admin"],
+  },
+  {
+    path: "/processos/novo",
+    element: <NovoProcesso />,
+    isPrivate: true,
+    roles: ["admin"],
+  },
+  {
+    path: "/processos/editar/:id",
+    element: <EditarProcesso />,
     isPrivate: true,
     roles: ["admin"],
   },
