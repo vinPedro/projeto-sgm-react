@@ -1,27 +1,74 @@
 import Button from "../../form/Button";
 import Campo from "../../form/Campo";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as ProfessorService from "../../services/ProfessorService";
+import Select from "react-select";
 
 export default function NovoProfessor() {
   const navigate = useNavigate();
   const [professor, setProfessor] = useState({});
   const [erro, setErro] = useState(null);
+  const [disciplinas, setDisciplinas] = useState([]);
+  const [erros, setErros] = useState({});
+  const [instituicoes, setInstituicoes] = useState([]);
+
+  useEffect(() => {
+    ProfessorService.getDisciplinas()
+      .then((res) => {
+        const opcoes = res.data.map((d) => ({
+          value: d.id,
+          label: d.nome,
+        }));
+        setDisciplinas(opcoes);
+      })
+      .catch(() =>
+        setErros((prev) => ({
+          ...prev,
+          geral: "Erro ao carregar disciplinas.",
+        }))
+      );
+  }, []);
+
+  useEffect(() => {
+     ProfessorService.getInstituicoes()
+        .then((res) => setInstituicoes(res.data))
+        .catch(() =>
+          setErros((prev) => ({ ...prev, geral: "Erro ao carregar instituições." }))
+        );
+    }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProfessor((prev) => ({ ...prev, [name]: value }));
+    setProfessor({ ...professor, [e.target.name]: e.target.value });
+    if (erros[e.target.name]) {
+      setErros((prev) => ({ ...prev, [e.target.name]: null }));
+    }
+  };
+
+  const handleSelectChange = (name, selectedOptions) => {
+    setProfessor((prev) => ({ ...prev, [name]: selectedOptions }));
+
+    if (erros[name]) {
+      setErros((prev) => ({ ...prev, [name]: null }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const idsSelecionados = (professor.disciplinasId ?? []).map((d) => d.value);
+
+    const payload = {
+      ...professor,
+      disciplinasId: idsSelecionados, // substitui o array de objetos por apenas os IDs
+    };
+
     try {
-      ProfessorService.createProfessor(professor);
+      ProfessorService.createProfessor(payload);
       navigate("/professores");
     } catch (error) {
       console.error("Erro ao cadastrar Professor:", error);
-      setErro("Erro ao cadastrar aluno");
+      setErro("Erro ao cadastrar disciplinas no professor");
     }
   };
 
@@ -67,13 +114,25 @@ export default function NovoProfessor() {
             value={professor.matricula ?? ""}
             onChange={handleChange}
           />
-          <Campo
-            autoComplete="off"
-            label="Instituição"
+          
+         <div >
+          <label className="block mb-1 text-gray-600">Instituição</label>
+          <select
             name="instituicaoId"
-            value={professor.instituicaoId ?? ""}
+            value={professor.instituicaoId}
             onChange={handleChange}
-          />
+            className="mt-0.5 mb-3 p-[8px] border-2 border-[#ccc] focus:border-primaria focus:outline-none rounded w-full"
+            required
+          >
+            <option value="">Selecione uma instituição</option>
+            {instituicoes.map((instituicao) => (
+              <option key={instituicao.id} value={instituicao.id}>
+                {instituicao.nome}
+              </option>
+            ))}
+          </select>
+        </div>
+
           <Campo
             autoComplete="off"
             label="Senha"
@@ -81,6 +140,15 @@ export default function NovoProfessor() {
             value={professor.senha ?? ""}
             onChange={handleChange}
           />
+
+          <Select className="mb-2 mt-2"
+            isMulti
+            name="disciplinasId"
+            options={disciplinas}
+            value={professor.disciplinasId ?? []}
+            onChange={(value) => handleSelectChange("disciplinasId", value)}
+          />
+
           <div className="flex justify-center">
             <Button color="color" type="button" onClick={() => navigate(-1)}>
               Cancelar
