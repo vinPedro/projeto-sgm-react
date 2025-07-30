@@ -21,3 +21,11 @@ export const updateAluno = (id, alunoData) => {
 export const deleteAluno = (id) => {
   return api.delete(`${API_URL}/${id}`);
 };
+
+export const getDisciplinas = () => {
+  return api.get("/disciplinas");
+};
+
+export const getInstituicoes = () => {
+  return api.get("/instituicoes");
+};

@@ -1,23 +1,70 @@
 import Button from "../../form/Button";
 import Campo from "../../form/Campo";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as AlunoService from "../../services/AlunoService";
+import Select from "react-select";
 
 export default function CadastroAluno() {
   const navigate = useNavigate();
   const [aluno, setAluno] = useState({});
   const [erro, setErro] = useState(null);
+    const [disciplinas, setDisciplinas] = useState([]);
+  const [erros, setErros] = useState({});
+  const [instituicoes, setInstituicoes] = useState([]);
+
+  useEffect(() => {
+      AlunoService.getDisciplinas()
+        .then((res) => {
+          const opcoes = res.data.map((d) => ({
+            value: d.id,
+            label: d.nome,
+          }));
+          setDisciplinas(opcoes);
+        })
+        .catch(() =>
+          setErros((prev) => ({
+            ...prev,
+            geral: "Erro ao carregar disciplinas.",
+          }))
+        );
+    }, []);
+  
+    useEffect(() => {
+       AlunoService.getInstituicoes()
+          .then((res) => setInstituicoes(res.data))
+          .catch(() =>
+            setErros((prev) => ({ ...prev, geral: "Erro ao carregar instituições." }))
+          );
+      }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setAluno((prev) => ({ ...prev, [name]: value }));
+    setAluno({ ...aluno, [e.target.name]: e.target.value });
+    if (erros[e.target.name]) {
+      setErros((prev) => ({ ...prev, [e.target.name]: null }));
+    }
+  };
+
+  const handleSelectChange = (name, selectedOptions) => {
+    setAluno((prev) => ({ ...prev, [name]: selectedOptions }));
+
+    if (erros[name]) {
+      setErros((prev) => ({ ...prev, [name]: null }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const idsSelecionados = (aluno.disciplinasPagasId ?? []).map((d) => d.value);
+
+    const payload = {
+      ...aluno,
+      disciplinasPagasId: idsSelecionados, // substitui o array de objetos por apenas os IDs
+    };
+
     try {
-      AlunoService.createAluno(aluno);
+      AlunoService.createAluno(payload);
       navigate(-1);
     } catch (error) {
       console.error("Erro ao cadastrar aluno:", error);
@@ -67,12 +114,25 @@ export default function CadastroAluno() {
             value={aluno.matricula ?? ""}
             onChange={handleChange}
           />
-          <Campo
-            label="Instituição"
+          
+          <div >
+          <label className="block mb-1 text-gray-600">Instituição</label>
+          <select
             name="instituicaoId"
-            value={aluno.instituicaoId ?? ""}
+            value={aluno.instituicaoId}
             onChange={handleChange}
-          />
+            className="mt-0.5 mb-3 p-[8px] border-2 border-[#ccc] focus:border-primaria focus:outline-none rounded w-full"
+            required
+          >
+            <option value="">Selecione uma instituição</option>
+            {instituicoes.map((instituicao) => (
+              <option key={instituicao.id} value={instituicao.id}>
+                {instituicao.nome}
+              </option>
+            ))}
+          </select>
+        </div>
+
           <Campo
             autoComplete="off"
             label="Senha"
@@ -80,6 +140,15 @@ export default function CadastroAluno() {
             value={aluno.senha ?? ""}
             onChange={handleChange}
           />
+
+          <Select className="mb-2 mt-2"
+            isMulti
+            name="disciplinasPagasId"
+            options={disciplinas}
+            value={aluno.disciplinasPagasId ?? []}
+            onChange={(value) => handleSelectChange("disciplinasPagasId", value)}
+          />
+
           <div className="flex justify-center">
             <Button color="color" type="button" onClick={() => navigate("/")}>
               Cancelar
