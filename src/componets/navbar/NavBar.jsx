@@ -8,42 +8,54 @@ function NavBar() {
   return (
     <nav>
       {/* Exibir item apenas para certos perfis */}
-      {profile === "monitor" && (
+      {profile && (
         <ScrollContainer>
-          <NavItem to="/monitor" label="Monitoria" />
-        </ScrollContainer>
-      )}
-
-      {profile === "professor" && (
-        <ScrollContainer>
-          <NavItem to="/professor" label="Painel Professor" />
-        </ScrollContainer>
-      )}
-
-      {profile === "aluno" && (
-        <ScrollContainer>
-          <NavItem to="/editais" label="Editais" />
           <NavItem to="/monitorias" label="Agenda" />
-        </ScrollContainer>
-      )}
 
-      {profile === "admin" && (
-        <ScrollContainer>
-          <NavItem to="/admin" label="Painel Admin" />
-          <NavItem to="/instituicoes" label="Instituições" />
-          <NavItem to="/coordenadores" label="Coordenadores" />
-          <NavItem to="/alunos" label="Alunos" />
-          <NavItem to="/disciplinas" label="Disciplinas" />
-        </ScrollContainer>
-      )}
+          {Array.isArray(profile) && profile.some(p => p === "monitor") && (
+            <>
+            <NavItem to="/atividades" label="Atividade"/>
+            </>
+          )}
 
-      {profile === "coordenador" && (
-        <ScrollContainer>
-          <NavItem to="/coordenador" label="Coordenação" />
-          <NavItem to="/alunos" label="Alunos" />
-          <NavItem to="/disciplinas" label="Disciplinas" />
-          <NavItem to="/monitorias" label="Monitoria" />
-          <NavItem to="/professor" label="Painel Professor" />
+          {Array.isArray(profile) && profile.some(p => p === "aluno") && (
+            <>
+            </>
+          )}
+
+          {Array.isArray(profile) && profile.some(p => p === "professor") && (
+            <>
+               
+            </>
+
+          )}
+
+          {Array.isArray(profile) && profile.some(p => p === "coordenador") && (
+            <>
+              
+              <NavItem to="/coordenador" label="Coordenação" />
+              <NavItem to="/alunos" label="Alunos" />
+              <NavItem to="/disciplinas" label="Disciplinas" />
+              <NavItem to="/monitorias" label="Monitoria" />
+              <NavItem to="/professores" label="Professores" />
+              <NavItem to="/monitorias" label="Monitorias" />
+              <NavItem to="/processos" label="Processos"/>
+            </>
+
+          )}
+
+          {Array.isArray(profile) && profile.some(p => p === "admin") && (
+            <>
+              <NavItem to="/admin" label="Painel Admin" />
+              <NavItem to="/instituicoes" label="Instituições" />
+              <NavItem to="/coordenadores" label="Coordenadores" />
+              <NavItem to="/alunos" label="Alunos" />
+              <NavItem to="/disciplinas" label="Disciplinas" />
+              <NavItem to="/cursos" label="Cursos" />
+            </>
+
+          )}
+
         </ScrollContainer>
       )}
     </nav>
