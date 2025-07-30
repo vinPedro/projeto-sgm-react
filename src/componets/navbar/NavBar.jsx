@@ -52,6 +52,7 @@ function NavBar() {
               <NavItem to="/alunos" label="Alunos" />
               <NavItem to="/disciplinas" label="Disciplinas" />
               <NavItem to="/cursos" label="Cursos" />
+              <NavItem to="/coordenadores/novo" label="Novo Coordenador" />
             </>
 
           )}

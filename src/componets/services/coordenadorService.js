@@ -1,6 +1,6 @@
 import api from "./api";
 
-const API_URL = "/coordenadores";
+const API_URL = "/professores/coordenadores";
 
 export const getCoordenadores = () => {
   return api.get(API_URL);
@@ -24,4 +24,8 @@ export const deleteCoordenador = (id) => {
 
 export const getCursos = () => {
   return api.get("/cursos");
+};
+
+export const getProfessores = () => {
+  return api.get("/professores");
 };
