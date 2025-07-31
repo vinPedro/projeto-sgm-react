@@ -65,7 +65,7 @@ export default function CadastroAluno() {
 
     try {
       AlunoService.createAluno(payload);
-      navigate(-1);
+      navigate(-1, { replace: true });
     } catch (error) {
       console.error("Erro ao cadastrar aluno:", error);
       setErro("Erro ao cadastrar aluno");
@@ -150,7 +150,7 @@ export default function CadastroAluno() {
           />
 
           <div className="flex justify-center">
-            <Button color="color" type="button" onClick={() => navigate("/")}>
+            <Button color="color" type="button" onClick={() => navigate(-1, { replace: true })}>
               Cancelar
             </Button>
             <Button>Cadastrar</Button>

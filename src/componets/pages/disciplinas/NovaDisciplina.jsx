@@ -51,7 +51,7 @@ export default function NovaDisciplina() {
     setErros({});
 
     DisciplinaService.createDisciplina(form)
-      .then(() => navigate("/disciplinas"))
+      .then(() => navigate("/disciplinas", { replace: true }))
       .catch((error) => {
         console.error("Erro ao criar disciplina:", error);
         setErros({ geral: "Erro ao salvar. Verifique os dados." });

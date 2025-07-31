@@ -50,7 +50,7 @@ export default function NovaDisciplina() {
     setErros({});
 
     AtividadeService.createAtividade(form)
-      .then(() => navigate(-1))
+      .then(() => navigate(-1, { replace: true }))
       .catch((error) => {
         console.error("Erro ao criar atividade:", error);
         setErros({ geral: "Erro ao salvar. Verifique os dados." });

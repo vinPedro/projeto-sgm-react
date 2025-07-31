@@ -53,7 +53,7 @@ export default function NovaCurso() {
     setErros({});
 
     ProcessoService.createProcesso(form)
-      .then(() => navigate(-1))
+      .then(() => navigate(-1, { replace: true }))
       .catch((error) => {
         console.error("Erro ao criar processo:", error);
         setErros({ geral: "Erro ao salvar. Verifique os dados." });

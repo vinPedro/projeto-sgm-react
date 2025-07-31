@@ -25,7 +25,7 @@ export default function Aluno() {
   const deletar = () => {
     AlunoService.deleteAluno(id)
       .then(() => {
-        navigate(-1);
+        navigate(-1, { replace: true });
       })
       .catch((err) => {
         console.error("Erro ao deletar aluno:", err);

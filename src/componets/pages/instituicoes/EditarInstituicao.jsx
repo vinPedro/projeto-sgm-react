@@ -47,7 +47,7 @@ export default function EditarInstituicao() {
   const handleSubmit = (e) => {
     e.preventDefault();
     InstituicaoSevice.updateInstituicao(id, form)
-      .then(() => navigate("/instituicoes"))
+      .then(() => navigate("/instituicoes", { replace: true }))
       .catch((err) => {
         console.error("Erro ao atualizar instituição:", err);
         setErro("Erro ao salvar. Verifique os dados.");

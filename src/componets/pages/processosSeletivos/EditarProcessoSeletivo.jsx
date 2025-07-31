@@ -74,7 +74,7 @@ export default function EditarCurso() {
     setErros({});
 
     ProcessoService.updateProcesso(id, form)
-      .then(() => navigate(-1))
+      .then(() => navigate(-1, { replace: true }))
       .catch((err) => {
         console.error("Erro ao atualizar Processo:", err);
         setErros({ geral: "Erro ao salvar. Verifique os dados." });
