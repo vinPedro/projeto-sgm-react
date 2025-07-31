@@ -1,6 +1,6 @@
-import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import * as coordenadorService from "../../services/coordenadorService";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import * as CoordenadorService from "../../services/CoordenadorService";
 import Button from "../../form/Button";
 
 export default function Coordenadores() {
@@ -15,7 +15,7 @@ export default function Coordenadores() {
 
     function carregarCoordenadores() {
         setCarregando(true);
-        coordenadorService.getCoordenadores()
+        CoordenadorService.getCoordenadores()
             .then((response) => {
                 setCoordenadores(response.data);
             })
@@ -30,7 +30,7 @@ export default function Coordenadores() {
 
     function deletar(id) {
         if (window.confirm("Tem certeza que deseja remover o cargo deste coordenador? Ele voltará a ser apenas um professor.")) {
-            coordenadorService.deleteCoordenador(id)
+            CoordenadorService.deleteCoordenador(id)
                 .then(() => {
                     setCoordenadores(coordenadores.filter((c) => c.id !== id));
                 })
@@ -58,36 +58,48 @@ export default function Coordenadores() {
             ) : (
                 <table className="min-w-full border border-gray-300 rounded">
                     <thead className="bg-gray-100">
-                    <tr>
-                        <th className="p-3 border-b border-gray-300 text-left">Nome</th>
-                        <th className="p-3 border-b border-gray-300 text-left">Email</th>
-                        <th className="p-3 border-b border-gray-300 text-left">Curso Coordenado</th>
-                        <th className="p-3 border-b border-gray-300 text-center">Ações</th>
-                    </tr>
+                        <tr>
+                            <th className="p-3 border-b border-gray-300 text-left">Nome</th>
+                            <th className="p-3 border-b border-gray-300 text-left">Email</th>
+                            <th className="p-3 border-b border-gray-300 text-left">Curso Coordenado</th>
+                            <th className="p-3 border-b border-gray-300 text-center">Ações</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {coordenadores.map((coord) => (
-                        <tr key={coord.id} className="hover:bg-gray-50">
-                            <td className="p-3 border-b border-gray-300">{coord.nome}</td>
-                            <td className="p-3 border-b border-gray-300">{coord.email}</td>
-                            <td className="p-3 border-b border-gray-300">{coord.cursoResponseDTO.nome}</td>
-                            <td className="p-3 border-b border-gray-300 text-center space-x-2">
-                                {/* BOTÃO ADICIONADO */}
-                                <Button
-                                    onClick={() => navigate(`/coordenadores/editar/${coord.id}`)}
-                                    color="color"
-                                >
-                                    Editar
-                                </Button>
-                                <Button
-                                    onClick={() => deletar(coord.id)}
-                                    color="red"
-                                >
-                                    Excluir
-                                </Button>
-                            </td>
-                        </tr>
-                    ))}
+                        {coordenadores.map((coord) => (
+
+                            <tr key={coord.id} className="hover:bg-gray-50">
+                                <td className="p-3 border-b border-gray-300">{coord.nome}</td>
+                                <td className="p-3 border-b border-gray-300">{coord.email}</td>
+                                {/* Percorrer a lista de cursos */}
+                                <td className="p-3 border-b border-gray-300">
+                                    {coord.cursosResponseDTO?.length > 0 ? (
+                                        coord.cursosResponseDTO.map((curso, idx) => (
+                                            <span key={idx} className="block">
+                                                {curso.nome}
+                                            </span>
+                                        ))
+                                    ) : (
+                                        <span className="text-gray-400">Nenhum curso</span>
+                                    )}
+                                </td>
+                                <td className="p-3 border-b border-gray-300 text-center space-x-2">
+                                    {/* BOTÃO ADICIONADO */}
+                                    <Button
+                                        onClick={() => navigate(`/coordenadores/editar/${coord.id}`)}
+                                        color="color"
+                                    >
+                                        Editar
+                                    </Button>
+                                    <Button
+                                        onClick={() => deletar(coord.id)}
+                                        color="red"
+                                    >
+                                        Excluir
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             )}

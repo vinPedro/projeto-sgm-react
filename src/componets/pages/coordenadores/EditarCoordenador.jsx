@@ -1,77 +1,91 @@
-import {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
-import * as service from "../../services/coordenadorService";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import * as Coordenadorservice from "../../services/CoordenadorService.js";
 import Button from "../../form/Button.jsx";
-import Campo from "../../form/Campo.jsx";
+import Select from "react-select";
 
 export default function EditarCoordenador() {
     const navigate = useNavigate();
-    const { id } = useParams(); // 1. Pegar o ID da URL
-
-    const [form, setForm] = useState({
-        nome: "",
-        cpf: "",
-        email: "",
-        emailAcademico: "",
-        cursoId: "",
-        instituicaoId: ""
-    });
-
+    const { id } = useParams();
+    const [coordenador, setCoordenador] = useState({});
     const [cursos, setCursos] = useState([]);
     const [erros, setErros] = useState({});
-    const [carregando, setCarregando] = useState(true);
+    const [perfil, setPerfil] = useState(null);
 
-    useEffect(() => {
-        // 2. Buscar os dados do coordenador e a lista de cursos
-        const fetchData = async () => {
-            try {
-                const [coordenadorResponse, cursosResponse] = await Promise.all([
-                    service.getCoordenadorById(id),
-                    service.getCursos(),
-                ]);
+    const handleSelectChange = (name, selectedOptions) => {
+        setCoordenador((prev) => ({ ...prev, [name]: selectedOptions }));
 
-                const data = coordenadorResponse.data;
-                // 3. Preencher o formulário com os dados recebidos do backend
-                setForm({
-                    nome: data.nome || "",
-                    cpf: data.cpf || "", // Apenas para exibição, não será enviado
-                    email: data.email || "",
-                    emailAcademico: data.emailAcademico || "",
-                    cursoId: data.cursoResponseDTO?.id || "",
-                    instituicaoId: data.instituicaoResponseDTO?.id || ""
-                });
-                setCursos(cursosResponse.data);
-
-            } catch (error) {
-                console.error("Erro ao carregar dados para edição:", error);
-                setErros({ geral: "Não foi possível carregar os dados do coordenador." });
-            } finally {
-                setCarregando(false);
-            }
-        };
-
-        fetchData();
-    }, [id]);
-
-    const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+        if (erros[name]) {
+            setErros((prev) => ({ ...prev, [name]: null }));
+        }
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // O backend não precisa do CPF para atualizar, então podemos omiti-lo.
-        const dadosParaEnviar = { ...form };
-        delete dadosParaEnviar.cpf;
+    useEffect(() => {
+        async function carregarDados() {
+            try {
+                const [coordRes, cursosRes] = await Promise.all([
+                    Coordenadorservice.getCoordenadorById(id),
+                    Coordenadorservice.getCursos(),
+                ]);
 
-        service.updateCoordenador(id, dadosParaEnviar)
-            .then(() => navigate("/coordenadores"))
-            .catch((error) => {
-                console.error("Erro ao atualizar coordenador:", error);
-                setErros({ geral: "Erro ao salvar as alterações." });
+                const cursoOpcoes = cursosRes.data.map((d) => ({
+                    value: d.id,
+                    label: d.nome,
+                }));
+
+                setCursos(cursoOpcoes);
+
+                const dadosCoordenador = coordRes.data;
+
+                // ✅ transcoordenadora disciplinasResponseDTO => { value, label }
+                const cursosSelecionados = (dadosCoordenador.cursosResponseDTO ?? []).map(
+                    (d) => ({
+                        value: d.id,
+                        label: d.nome,
+                    })
+                );
+
+
+                setPerfil(dadosCoordenador);
+                setCoordenador({
+                    ...dadosCoordenador,
+                    cursosId: cursosSelecionados, // ✅ já no coordenadorato que o Select espera
+                });
+
+            } catch (err) {
+                console.error("Erro ao carregar dados:", err);
+                setErros((prev) => ({
+                    ...prev,
+                    geral: "Erro ao carregar dados.",
+                }));
+            }
+        }
+
+        carregarDados();
+    }, [id]);
+
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+
+        const idsSelecionados = (coordenador.cursosId ?? []).map((d) => d.value);
+
+        const payload = {
+            ...coordenador,
+            cursosId: idsSelecionados, // substitui o array de objetos por apenas os IDs
+        };
+        
+        Coordenadorservice.updateCoordenador(id, payload)
+            .then((res) => {
+                setPerfil(res.data);
+                navigate(-1,{ replace: true })
+            })
+            .catch((err) => {
+                console.error("Erro ao salvar perfil:", err);
             });
     };
 
-    if (carregando) return <p className="text-center mt-4">Carregando...</p>;
+    if (!perfil) return <div className="text-center mt-10">Carregando...</div>;
     if (erros.geral) return <p className="text-red-500 text-center mt-4">{erros.geral}</p>;
 
     return (
@@ -79,28 +93,15 @@ export default function EditarCoordenador() {
             <form onSubmit={handleSubmit} className="border p-6 rounded w-full max-w-xl shadow-lg">
                 <h2 className="text-2xl font-bold mb-4">Editar Coordenador</h2>
 
-                <Campo label="Nome Completo" name="nome" value={form.nome} onChange={handleChange} required />
-                <Campo label="CPF" name="cpf" value={form.cpf} disabled={true} />
-                <Campo label="Email Pessoal" name="email" type="email" value={form.email} onChange={handleChange} required />
-                <Campo label="Email Acadêmico" name="emailAcademico" type="email" value={form.emailAcademico} onChange={handleChange} />
+                <p>Professor: {coordenador.professorResponseDTO.matricula}</p>
 
-                <div className="mb-4">
-                    <label className="block mb-1 text-gray-600">Curso a Coordenar</label>
-                    <select
-                        name="cursoId"
-                        value={form.cursoId}
-                        onChange={handleChange}
-                        className="mt-0.5 mb-3 p-[8px] border-2 border-[#ccc] focus:border-primaria focus:outline-none rounded w-full"
-                        required
-                    >
-                        <option value="">Selecione um curso</option>
-                        {cursos.map((curso) => (
-                            <option key={curso.id} value={curso.id}>
-                                {curso.nome}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+                <Select className="mb-2 mt-2"
+                    isMulti
+                    name="cursosId"
+                    options={cursos}
+                    value={coordenador.cursosId ?? []}
+                    onChange={(value) => handleSelectChange("cursosId", value)}
+                />
 
                 <div className="flex justify-center gap-2">
                     <Button type="button" color="color" onClick={() => navigate("/coordenadores")}>

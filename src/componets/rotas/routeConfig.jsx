@@ -7,7 +7,6 @@ import EditarAluno from "../pages/alunos/EditarAluno";
 import Monitorias from "../pages/monitorias/Monitorias";
 import Alunos from "../pages/alunos/Alunos";
 import Professor from "../pages/professores/Professor";
-import Coordenador from "../pages/coordenadores/Coordenador";
 import Monitor from "../pages/monitores/Monitor";
 import Admin from "../pages/admins/Admin";
 import Instituicoes from "../pages/instituicoes/Instituicoes";
@@ -65,12 +64,6 @@ export const routeConfig = [
     element: <Professor />,
     isPrivate: true,
     roles: ["professor", "coordenador", "admin"],
-  },
-  {
-    path: "/coordenador",
-    element: <Coordenador />,
-    isPrivate: true,
-    roles: ["coordenador", "admin"],
   },
   {
     path: "/monitor",
