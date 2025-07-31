@@ -67,7 +67,7 @@ export default function NovaDisciplina() {
     setErros({});
 
     MonitoriaService.createMonitoria(form)
-      .then(() => navigate(-1))
+      .then(() => navigate(-1, { replace: true }))
       .catch((error) => {
         console.error("Erro ao criar monitoria:", error);
         setErros({ geral: "Erro ao salvar. Verifique os dados." });

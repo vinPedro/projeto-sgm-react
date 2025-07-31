@@ -55,7 +55,7 @@ export default function NovaCurso() {
     setErros({});
 
     CursoService.createCurso(form)
-      .then(() => navigate(-1))
+      .then(() => navigate(-1, { replace: true }))
       .catch((error) => {
         console.error("Erro ao criar curso:", error);
         setErros({ geral: "Erro ao salvar. Verifique os dados." });

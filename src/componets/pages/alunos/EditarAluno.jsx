@@ -90,7 +90,7 @@ export default function EditarAluno() {
     AlunoService.updateAluno(id, payload)
       .then((res) => {
         setPerfil(res.data);
-        navigate(-1);
+        navigate(-1, { replace: true });
       })
       .catch((err) => {
         console.error("Erro ao salvar perfil:", err);

@@ -63,9 +63,6 @@ export default function Disciplinas() {
               <th className="p-3 border-b border-gray-300 text-left">
                 Carga Horária
               </th>
-              <th className="p-3 border-b border-gray-300 text-left">
-                Professor
-              </th>
               <th className="p-3 border-b border-gray-300 text-left">Curso</th>
               <th className="p-3 border-b border-gray-300 text-center">
                 Ações
@@ -78,9 +75,6 @@ export default function Disciplinas() {
                 <td className="p-3 border-b border-gray-300">{disc.nome}</td>
                 <td className="p-3 border-b border-gray-300">
                   {disc.cargaHoraria}
-                </td>
-                <td className="p-3 border-b border-gray-300">
-                  {disc.professorResponseDTO?.nome ?? "N/A"}
                 </td>
                 <td className="p-3 border-b border-gray-300">
                   {disc.cursoResponseDTO?.nome ?? "N/A"}

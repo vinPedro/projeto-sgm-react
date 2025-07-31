@@ -20,7 +20,7 @@ export default function NovaInstituicao() {
   const handleSubmit = (e) => {
     e.preventDefault();
     InstituicaoService.createInstituicao(form)
-      .then(() => navigate("/instituicoes"))
+      .then(() => navigate("/instituicoes", { replace: true }))
       .catch((error) => {
         console.error("Erro ao criar instituição:", error);
         setErro("Erro ao salvar. Verifique os dados.");

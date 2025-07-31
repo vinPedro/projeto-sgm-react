@@ -71,7 +71,7 @@ export default function EditarDisciplina() {
     setErros({});
 
     DisciplinaService.updateDisciplina(id, form)
-      .then(() => navigate("/disciplinas"))
+      .then(() => navigate("/disciplinas", { replace: true }))
       .catch((err) => {
         console.error("Erro ao atualizar disciplina:", err);
         setErros({ geral: "Erro ao salvar. Verifique os dados." });
