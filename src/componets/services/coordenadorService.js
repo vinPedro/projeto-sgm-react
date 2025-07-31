@@ -23,9 +23,9 @@ export const deleteCoordenador = (id) => {
 };
 
 export const getCursos = () => {
-  return api.get("/cursos");
+  return api.get("/cursos/null-coordenadores");
 };
 
 export const getProfessores = () => {
-  return api.get("/professores");
+  return api.get("/professores/null-coordenacao");
 };

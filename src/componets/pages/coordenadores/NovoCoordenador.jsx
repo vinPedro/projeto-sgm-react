@@ -1,7 +1,7 @@
 import Button from "../../form/Button";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import * as CoordenadorService from "../../services/coordenadorService";
+import * as CoordenadorService from "../../services/CoordenadorService";
 import Select from "react-select";
 
 export default function NovoCoordenador() {
@@ -64,7 +64,7 @@ export default function NovoCoordenador() {
 
     try {
       CoordenadorService.createCoordenador(payload);
-      navigate(-1);
+      navigate(-1, { replace: true });
     } catch (error) {
       console.error("Erro ao cadastrar coordenador:", error);
       setErro("Erro ao cadastrar cursos no coordenador");

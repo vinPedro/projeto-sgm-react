@@ -33,12 +33,10 @@ function NavBar() {
           {Array.isArray(profile) && profile.some(p => p === "coordenador") && (
             <>
               
-              <NavItem to="/coordenador" label="Coordenação" />
               <NavItem to="/alunos" label="Alunos" />
               <NavItem to="/disciplinas" label="Disciplinas" />
               <NavItem to="/monitorias" label="Monitoria" />
               <NavItem to="/professores" label="Professores" />
-              <NavItem to="/monitorias" label="Monitorias" />
               <NavItem to="/processos" label="Processos"/>
             </>
 
@@ -48,11 +46,10 @@ function NavBar() {
             <>
               <NavItem to="/admin" label="Painel Admin" />
               <NavItem to="/instituicoes" label="Instituições" />
-              <NavItem to="/coordenadores" label="Coordenadores" />
               <NavItem to="/alunos" label="Alunos" />
               <NavItem to="/disciplinas" label="Disciplinas" />
               <NavItem to="/cursos" label="Cursos" />
-              <NavItem to="/coordenadores/novo" label="Novo Coordenador" />
+              <NavItem to="/coordenadores" label="Coordenadores" />
             </>
 
           )}
