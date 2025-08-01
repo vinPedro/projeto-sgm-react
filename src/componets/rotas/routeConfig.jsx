@@ -7,7 +7,6 @@ import EditarAluno from "../pages/alunos/EditarAluno";
 import Monitorias from "../pages/monitorias/Monitorias";
 import Alunos from "../pages/alunos/Alunos";
 import Professor from "../pages/professores/Professor";
-import Monitor from "../pages/monitores/Monitor";
 import Admin from "../pages/admins/Admin";
 import Instituicoes from "../pages/instituicoes/Instituicoes";
 import NovaInstituicao from "../pages/instituicoes/NovaInstituicao";
@@ -32,6 +31,9 @@ import EditarMonitoria from "../pages/monitorias/EditarMonitoria";
 import Processos from "../pages/processosSeletivos/ProcessosSeletivos";
 import NovoProcesso from "../pages/processosSeletivos/NovoProcessoSeletivo";
 import EditarProcesso from "../pages/processosSeletivos/EditarProcessoSeletivo";
+import Monitores from "../pages/monitores/Monitores";
+import NovoMonitor from "../pages/monitores/NovoMonitor";
+import EditarMonitor from "../pages/monitores/EditarMonitor";
 
 
 export const routeConfig = [
@@ -64,12 +66,6 @@ export const routeConfig = [
     element: <Professor />,
     isPrivate: true,
     roles: ["professor", "coordenador", "admin"],
-  },
-  {
-    path: "/monitor",
-    element: <Monitor />,
-    isPrivate: true,
-    roles: ["monitor", "admin"],
   },
   {
     path: "/admin",
@@ -224,6 +220,24 @@ export const routeConfig = [
   {
     path: "/processos/editar/:id",
     element: <EditarProcesso />,
+    isPrivate: true,
+    roles: ["admin"],
+  },
+  {
+    path: "/monitores",
+    element: <Monitores />,
+    isPrivate: true,
+    roles: ["admin"],
+  },
+  {
+    path: "/monitores/novo",
+    element: <NovoMonitor />,
+    isPrivate: true,
+    roles: ["admin"],
+  },
+  {
+    path: "/monitores/editar/:id",
+    element: <EditarMonitor />,
     isPrivate: true,
     roles: ["admin"],
   },

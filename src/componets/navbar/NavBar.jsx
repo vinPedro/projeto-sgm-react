@@ -25,17 +25,16 @@ function NavBar() {
 
           {Array.isArray(profile) && profile.some(p => p === "professor") && (
             <>
-               
+               <NavItem to="/monitores" label="Monitores"/>
+               <NavItem to="/monitorias" label="Monitorias" />
             </>
 
           )}
 
           {Array.isArray(profile) && profile.some(p => p === "coordenador") && (
             <>
-              
               <NavItem to="/alunos" label="Alunos" />
               <NavItem to="/disciplinas" label="Disciplinas" />
-              <NavItem to="/monitorias" label="Monitoria" />
               <NavItem to="/professores" label="Professores" />
               <NavItem to="/processos" label="Processos"/>
             </>
@@ -46,8 +45,6 @@ function NavBar() {
             <>
               <NavItem to="/admin" label="Painel Admin" />
               <NavItem to="/instituicoes" label="Instituições" />
-              <NavItem to="/alunos" label="Alunos" />
-              <NavItem to="/disciplinas" label="Disciplinas" />
               <NavItem to="/cursos" label="Cursos" />
               <NavItem to="/coordenadores" label="Coordenadores" />
             </>
