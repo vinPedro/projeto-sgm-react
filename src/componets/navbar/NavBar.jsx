@@ -10,11 +10,12 @@ function NavBar() {
       {/* Exibir item apenas para certos perfis */}
       {profile && (
         <ScrollContainer>
-          <NavItem to="/monitorias" label="Agenda" />
+          <NavItem to="/processos" label="Processos"/>
 
           {Array.isArray(profile) && profile.some(p => p === "monitor") && (
             <>
             <NavItem to="/atividades" label="Atividade"/>
+            <NavItem to="/monitorias" label="Agenda" />
             </>
           )}
 
@@ -36,7 +37,6 @@ function NavBar() {
               <NavItem to="/alunos" label="Alunos" />
               <NavItem to="/disciplinas" label="Disciplinas" />
               <NavItem to="/professores" label="Professores" />
-              <NavItem to="/processos" label="Processos"/>
             </>
 
           )}
