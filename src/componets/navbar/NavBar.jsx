@@ -26,6 +26,7 @@ function NavBar() {
 
           {Array.isArray(profile) && profile.some(p => p === "professor") && (
             <>
+                <NavItem to="/disciplinas/professor" label="Minhas Disciplinas"/>
                <NavItem to="/monitores" label="Monitores"/>
                <NavItem to="/monitorias" label="Monitorias" />
             </>

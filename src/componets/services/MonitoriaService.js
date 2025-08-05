@@ -40,6 +40,10 @@ export const cancelarInscricao = (inscricao) => {
   } );
 }
 
+export const getAlunos = (id) => {
+  return api.get(`${API_URL}/inscricao/alunos/${id}`);
+};
+
 export const getDisciplinas = () => {
   return api.get("/disciplinas");
 };

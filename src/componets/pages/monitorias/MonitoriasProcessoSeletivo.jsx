@@ -157,12 +157,21 @@ export default function MonitoriasProcessoSeletivo() {
 
                 <td className="p-3 border-b border-gray-300 text-center space-x-2">
                   {Array.isArray(profile) && profile.some(p => p === "coordenador") && (
+                    <>
                     <Button
                       onClick={() => navigate(`/monitoria/editar/${monitoria.id}`)}
                       color="color"
                     >
                       Editar
-                    </Button>)}
+                    </Button>
+                    <Button
+                      onClick={() => navigate(`/monitoria/inscritos/${monitoria.id}`)}
+                    >
+                      Inscritos
+                    </Button>
+                    </>
+                    
+                  )}
                   {Array.isArray(profile) && profile.some(p => p === "coordenador") && (
                     <Button
                       onClick={() => deletarMonitoria(monitoria.id)}
