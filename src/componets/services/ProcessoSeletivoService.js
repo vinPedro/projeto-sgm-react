@@ -25,3 +25,7 @@ export const deleteProcesso = (id) => {
 export const getInstituicoes = () => {
   return api.get("/instituicoes");
 };
+
+export const finalizarProcesso = (id) => {
+  return api.put(`${API_URL}/resultado/${id}`);
+};

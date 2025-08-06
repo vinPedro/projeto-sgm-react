@@ -9,7 +9,7 @@ export default function MonitoriaInscritos() {
   const [erro, setErro] = useState(null);
 
   useEffect(() => {
-    console.log("aqui")
+
     MonitoriaService.getAlunos(id)
     
       .then((response) => {

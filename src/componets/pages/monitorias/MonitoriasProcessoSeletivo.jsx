@@ -2,10 +2,11 @@ import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../form/Button";
 import * as MonitoriaService from "../../services/MonitoriaService";
+import * as ProcessoService from "../../services/ProcessoSeletivoService";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 
-export default function MonitoriasProcessoSeletivo() {
+export default function MonitoriasProcessoSeletivo( ) {
   const navigate = useNavigate();
   const [monitorias, setMonitorias] = useState([]);
   const [erro, setErro] = useState(null);
@@ -13,6 +14,21 @@ export default function MonitoriasProcessoSeletivo() {
   const [inscricoesAluno, setInscricoesAluno] = useState([]);
   const { profile, user } = useAuth();
   const { id } = useParams();
+  const [processo, setProcesso] = useState(null);
+
+  useEffect(() => {
+    setCarregando(true);
+    ProcessoService.getProcessoById(id)
+      .then((response) => {
+        setProcesso(response.data);
+        setCarregando(false);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar processo:", error);
+        setErro("Erro ao carregar processo.");
+        setCarregando(false);
+      });
+  }, [id]);
 
 
   const carregarMonitorias = useCallback(() => {
@@ -46,6 +62,8 @@ export default function MonitoriasProcessoSeletivo() {
     carregarMonitorias();
     carregarInscricoesAluno();
   }, [carregarMonitorias, carregarInscricoesAluno]);
+
+
 
   function deletarMonitoria(id) {
     if (window.confirm("Tem certeza que deseja excluir esta monitoria?")) {
@@ -83,7 +101,7 @@ export default function MonitoriasProcessoSeletivo() {
 
   function cancelarInscricao(monitoriaId) {
     if (window.confirm("Tem certeza que deseja cancelar sua inscrição nesta monitoria?")) {
-      
+
       const inscricao = {
         monitoriaId: monitoriaId,
         alunoId: user.id,
@@ -102,6 +120,21 @@ export default function MonitoriasProcessoSeletivo() {
     }
   }
 
+  function finalizarProcesso(id) {
+    if (window.confirm("Tem certeza que deseja finalizar o processo?")) {
+
+      ProcessoService.finalizarProcesso(id)
+        .then(() => {
+          alert("Finalizado com Sucesso");
+          navigate(0);
+        })
+        .catch((error) => {
+          console.error("Erro ao Finalizar Processo:", error);
+          alert("Erro ao Finalizar Processo.");
+        });
+    }
+  }
+
   function jaInscrito(monitoriaId) {
     return inscricoesAluno.some((i) => i.id === monitoriaId);
   }
@@ -114,6 +147,14 @@ export default function MonitoriasProcessoSeletivo() {
     <div className="p-6 max-w-4xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Monitorias</h1>
+        {Array.isArray(profile) && profile.some(p => p === "coordenador") && (processo?.finalizado === false) && (
+            <Button
+              onClick={() => finalizarProcesso(processo.id)}
+              color="color"
+            >
+              Finalizar
+            </Button>
+        )}
       </div>
 
       {monitorias.length === 0 ? (
@@ -158,19 +199,19 @@ export default function MonitoriasProcessoSeletivo() {
                 <td className="p-3 border-b border-gray-300 text-center space-x-2">
                   {Array.isArray(profile) && profile.some(p => p === "coordenador") && (
                     <>
-                    <Button
-                      onClick={() => navigate(`/monitoria/editar/${monitoria.id}`)}
-                      color="color"
-                    >
-                      Editar
-                    </Button>
-                    <Button
-                      onClick={() => navigate(`/monitoria/inscritos/${monitoria.id}`)}
-                    >
-                      Inscritos
-                    </Button>
+                      <Button
+                        onClick={() => navigate(`/monitoria/editar/${monitoria.id}`)}
+                        color="color"
+                      >
+                        Editar
+                      </Button>
+                      <Button
+                        onClick={() => navigate(`/monitoria/inscritos/${monitoria.id}`)}
+                      >
+                        Inscritos
+                      </Button>
                     </>
-                    
+
                   )}
                   {Array.isArray(profile) && profile.some(p => p === "coordenador") && (
                     <Button
