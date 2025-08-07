@@ -4,50 +4,32 @@ import Campo from "../../form/Campo";
 import ButtonSubmit from "../../form/Button";
 import * as AlunoService from "../../services/AlunoService";
 import { useNavigate } from "react-router-dom";
-import Select from "react-select";
 
 export default function EditarAluno() {
   const { id } = useParams();
   const [perfil, setPerfil] = useState(null);
   const [form, setForm] = useState({});
   const [instituicoes, setInstituicoes] = useState();
-  const [disciplinas, setDisciplinas] = useState([]);
   const [erros, setErros] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
     async function carregarDados() {
       try {
-        const [alunoRes, discRes, instRes] = await Promise.all([
+        const [alunoRes, instRes] = await Promise.all([
           AlunoService.getAlunoById(id),
-          AlunoService.getDisciplinas(),
           AlunoService.getInstituicoes(),
         ]);
 
-        const disciplinasOpcoes = discRes.data.map((d) => ({
-          value: d.id,
-          label: d.nome,
-        }));
-
-        setDisciplinas(disciplinasOpcoes);
         setInstituicoes(instRes.data);
 
         const dadosAluno = alunoRes.data;
-
-        // ✅ transforma disciplinasPagasResponseDTO => { value, label }
-        const disciplinasSelecionadas = (dadosAluno.disciplinasPagasResponseDTO ?? []).map(
-          (d) => ({
-            value: d.id,
-            label: d.nome,
-          })
-        );
 
         const instituicaoSelecionada = dadosAluno.instituicaoResponseDTO ?? null;
 
         setPerfil(dadosAluno);
         setForm({
           ...dadosAluno,
-          disciplinasPagasId: disciplinasSelecionadas, // ✅ já no formato que o Select espera
           instituicaoId: instituicaoSelecionada?.id ?? "",
         });
 
@@ -70,24 +52,9 @@ export default function EditarAluno() {
     }
   };
 
-  const handleSelectChange = (name, selectedOptions) => {
-    setForm((prev) => ({ ...prev, [name]: selectedOptions }));
-
-    if (erros[name]) {
-      setErros((prev) => ({ ...prev, [name]: null }));
-    }
-  };
-
   const salvar = () => {
 
-    const idsSelecionados = (form.disciplinasPagasId ?? []).map((d) => d.value);
-
-    const payload = {
-      ...form,
-      disciplinasPagasId: idsSelecionados, // substitui o array de objetos por apenas os IDs
-    };
-
-    AlunoService.updateAluno(id, payload)
+    AlunoService.updateAluno(id, form)
       .then((res) => {
         setPerfil(res.data);
         navigate(-1, { replace: true });
@@ -109,6 +76,13 @@ export default function EditarAluno() {
             label="Nome"
             name="nome"
             value={form.nome ?? ""}
+            onChange={handleChange}
+          />
+          <Campo
+            label="CRE"
+            name="cre"
+            type="number"
+            value={form.cre ?? ""}
             onChange={handleChange}
           />
           <Campo
@@ -155,15 +129,6 @@ export default function EditarAluno() {
               ))}
             </select>
           </div>
-
-          <Select className="mb-2 mt-2"
-            isMulti
-            name="disciplinasPagasId"
-            options={disciplinas}
-            value={form.disciplinasPagasId ?? []}
-            required
-            onChange={(value) => handleSelectChange("disciplinasPagasId", value)}
-          />
 
         </div>
 

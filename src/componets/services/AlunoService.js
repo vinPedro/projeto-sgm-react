@@ -22,6 +22,22 @@ export const deleteAluno = (id) => {
   return api.delete(`${API_URL}/${id}`);
 };
 
+export const getAlunosConcluintes = (id) => {
+  return api.get(`${API_URL}/disciplinas/concluintes/${id}`);
+};
+
+export const getAlunosNaoConcluintes = (id) => {
+  return api.get(`${API_URL}/disciplinas/null-concluintes/${id}`);
+};
+
+export const revogarConclusaoAluno = (concluinte) => {
+  return api.delete(`${API_URL}/disciplina/concluinte`, {data: concluinte});
+};
+
+export const adicionarConcluinte = (concluinte) => {
+  return api.post(`${API_URL}/disciplinas/concluintes`, concluinte);
+};
+
 export const getDisciplinas = () => {
   return api.get("/disciplinas");
 };
