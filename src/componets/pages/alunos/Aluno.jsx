@@ -59,9 +59,6 @@ export default function Aluno() {
               <strong>Matrícula: </strong> {aluno.matricula}
             </p>
             <p>
-              <strong>CRE: </strong> {aluno.cre}
-            </p>
-            <p>
               <strong>E-mail: </strong> {aluno.email}
             </p>
             <p>

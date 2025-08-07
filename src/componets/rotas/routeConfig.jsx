@@ -34,11 +34,6 @@ import EditarProcesso from "../pages/processosSeletivos/EditarProcessoSeletivo";
 import Monitores from "../pages/monitores/Monitores";
 import NovoMonitor from "../pages/monitores/NovoMonitor";
 import EditarMonitor from "../pages/monitores/EditarMonitor";
-import MonitoriasProcessoSeletivo from "../pages/monitorias/MonitoriasProcessoSeletivo";
-import MonitoriaInscritos from "../pages/monitorias/MonitoriaInscritos";
-import DisciplinasProfessor from "../pages/disciplinas/DisciplinasProfessor";
-import AlunosConcluintes from "../pages/alunos/AlunosConcluintes";
-import CadastrarAlunoConcluinte from "../pages/alunos/CadastroAlunoConcluinte";
 
 
 export const routeConfig = [
@@ -196,19 +191,7 @@ export const routeConfig = [
     path: "/monitorias",
     element: <Monitorias />,
     isPrivate: true,
-    roles: ["admin" ],
-  },
-  {
-    path: "/monitoria/inscritos/:id",
-    element: <MonitoriaInscritos />,
-    isPrivate: true,
-    roles: ["admin" ],
-  },
-  {
-    path: "/monitoriasProcesso/:id",
-    element: <MonitoriasProcessoSeletivo />,
-    isPrivate: true,
-    roles: ["admin","aluno", "monitor", "professor", "coordenador" ],
+    roles: ["admin"],
   },
   {
     path: "/monitorias/novo",
@@ -226,7 +209,7 @@ export const routeConfig = [
     path: "/processos",
     element: <Processos />,
     isPrivate: true,
-    roles: ["admin","aluno", "monitor", "professor", "coordenador" ],
+    roles: ["admin"],
   },
   {
     path: "/processos/novo",
@@ -257,24 +240,5 @@ export const routeConfig = [
     element: <EditarMonitor />,
     isPrivate: true,
     roles: ["admin"],
-  },
-  {
-    path: "/disciplinas/professor",
-    element: <DisciplinasProfessor />,
-    isPrivate: true,
-    roles: ["admin","professor"],
-  },
-
-  {
-    path: "/alunos/concluintes/:id",
-    element: <AlunosConcluintes />,
-    isPrivate: true,
-    roles: ["admin","professor"],
-  },
-  {
-    path: "/alunos/novo/concluinte/:id",
-    element: <CadastrarAlunoConcluinte />,
-    isPrivate: true,
-    roles: ["admin","professor"],
   },
 ];
