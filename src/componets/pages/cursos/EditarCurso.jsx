@@ -157,7 +157,7 @@ export default function EditarCurso() {
           <Button
             type="button"
             color="color"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate(-1, { replace: true })}
           >
             Cancelar
           </Button>

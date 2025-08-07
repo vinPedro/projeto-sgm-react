@@ -173,7 +173,7 @@ export default function EditarAluno() {
               type="button"
               color="color"
               onClick={() => {
-                navigate(-1)
+                navigate(-1, { replace: true })
               }}
               className="bg-gray-300 text-black px-4 py-2 rounded-lg"
             >

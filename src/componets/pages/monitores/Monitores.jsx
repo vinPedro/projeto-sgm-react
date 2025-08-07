@@ -10,10 +10,10 @@ export default function Monitores() {
     const [carregando, setCarregando] = useState(true);
 
     useEffect(() => {
-        carregarMonitorenadores();
+        carregarMonitores();
     }, []);
 
-    function carregarMonitorenadores() {
+    function carregarMonitores() {
         setCarregando(true);
         MonitorService.getMonitores()
             .then((response) => {

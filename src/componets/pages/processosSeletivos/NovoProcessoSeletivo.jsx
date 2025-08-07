@@ -4,7 +4,7 @@ import * as ProcessoService from "../../services/ProcessoSeletivoService";
 import Button from "../../form/Button";
 import Campo from "../../form/Campo";
 
-export default function NovaCurso() {
+export default function NovaProcessoSeletivo() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     /* ... */
@@ -133,7 +133,7 @@ export default function NovaCurso() {
           <Button
             type="button"
             color="color"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate(-1, { replace: true })}
           >
             Cancelar
           </Button>

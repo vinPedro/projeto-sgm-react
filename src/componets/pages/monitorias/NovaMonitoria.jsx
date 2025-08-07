@@ -4,7 +4,7 @@ import * as MonitoriaService from "../../services/MonitoriaService"
 import Button from "../../form/Button";
 import Campo from "../../form/Campo";
 
-export default function NovaDisciplina() {
+export default function NovaMonitoria() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     /* ... */
@@ -182,7 +182,7 @@ export default function NovaDisciplina() {
           <Button
             type="button"
             color="color"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate(-1, { replace: true })}
           >
             Cancelar
           </Button>

@@ -15,8 +15,8 @@ export default function Professores() {
         setProfessores(response.data);
       })
       .catch((error) => {
-        console.error("Erro ao buscar alunos:", error);
-        setErro("Erro ao buscar os dados dos alunos");
+        console.error("Erro ao buscar professores:", error);
+        setErro("Erro ao buscar os dados dos professores");
       });
   }, []);
 

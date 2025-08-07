@@ -4,7 +4,7 @@ import Button from "../../form/Button";
 import Campo from "../../form/Campo";
 import * as ProcessoService from "../../services/ProcessoSeletivoService";
 
-export default function EditarCurso() {
+export default function EditarProcessoSeletivo() {
   const { id } = useParams();
   const navigate = useNavigate();
   
@@ -155,7 +155,7 @@ export default function EditarCurso() {
           <Button
             type="button"
             color="color"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate(-1, { replace: true })}
           >
             Cancelar
           </Button>

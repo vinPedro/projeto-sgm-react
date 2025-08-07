@@ -3,14 +3,16 @@ import { useNavigate } from "react-router-dom";
 import * as AtividadeService from "../../services/AtividadeService";
 import Button from "../../form/Button";
 import Campo from "../../form/Campo";
+import { useAuth } from "../../AuthContext";
 
-export default function NovaDisciplina() {
+export default function NovaAtividade() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     /* ... */
   });
   const [monitorias, setMonitorias] = useState([]);
   const [erros, setErros] = useState({});
+    const {  user } = useAuth();
 
   useEffect(() => {
    AtividadeService.getMonitorias()
@@ -47,9 +49,14 @@ export default function NovaDisciplina() {
       return;
     }
 
+    const payload = {
+            ...form,
+            matricula: user.matricula, // substitui o array de objetos por apenas os IDs
+        };
+
     setErros({});
 
-    AtividadeService.createAtividade(form)
+    AtividadeService.createAtividade(payload)
       .then(() => navigate(-1, { replace: true }))
       .catch((error) => {
         console.error("Erro ao criar atividade:", error);
@@ -116,7 +123,7 @@ export default function NovaDisciplina() {
           <Button
             type="button"
             color="color"
-            onClick={() => navigate("/disciplinas")}
+            onClick={() => navigate(-1, { replace: true })}
           >
             Cancelar
           </Button>

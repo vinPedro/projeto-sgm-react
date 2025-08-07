@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../form/Button";
 import * as AtividadeService from "../../services/AtividadeService";
 
-export default function Disciplinas() {
+export default function Atividades() {
   const navigate = useNavigate();
   const [atividades, setAtividades] = useState([]);
   const [erro, setErro] = useState(null);
@@ -21,21 +21,21 @@ export default function Disciplinas() {
         setCarregando(false);
       })
       .catch((error) => {
-        console.error("Erro ao buscar disciplinas:", error);
-        setErro("Erro ao carregar disciplinas.");
+        console.error("Erro ao buscar atividades:", error);
+        setErro("Erro ao carregar atividades.");
         setCarregando(false);
       });
   }
 
-  function deletarDisciplina(id) {
-    if (window.confirm("Tem certeza que deseja excluir esta disciplina?")) {
+  function deletarAtividade(id) {
+    if (window.confirm("Tem certeza que deseja excluir esta atividade?")) {
       AtividadeService.deleteAtividade(id)
         .then(() => {
           setAtividades(atividades.filter((d) => d.id !== id));
         })
         .catch((error) => {
-          console.error("Erro ao deletar disciplina:", error);
-          alert("Erro ao deletar disciplina.");
+          console.error("Erro ao deletar atividade:", error);
+          alert("Erro ao deletar atividade.");
         });
     }
   }
@@ -64,6 +64,9 @@ export default function Disciplinas() {
                 Data-Hora
               </th>
               <th className="p-3 border-b border-gray-300 text-center">
+                Responsável
+              </th>
+              <th className="p-3 border-b border-gray-300 text-center">
                 Ações
               </th>
             </tr>
@@ -75,6 +78,10 @@ export default function Disciplinas() {
                 <td className="p-3 border-b border-gray-300">
                   {ativ.dataHora}
                 </td>
+                <td className="p-3 border-b border-gray-300">
+                  {ativ.matricula}
+                </td>
+
 
                 <td className="p-3 border-b border-gray-300 text-center space-x-2">
                   <Button
@@ -84,7 +91,7 @@ export default function Disciplinas() {
                     Editar
                   </Button>
                   <Button
-                    onClick={() => deletarDisciplina(ativ.id)}
+                    onClick={() => deletarAtividade(ativ.id)}
                     color="red"
                   >
                     Excluir

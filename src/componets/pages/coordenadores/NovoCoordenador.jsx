@@ -106,7 +106,7 @@ export default function NovoCoordenador() {
           />
 
           <div className="flex justify-center">
-            <Button color="color" type="button" onClick={() => navigate(-1)}>
+            <Button color="color" type="button" onClick={() => navigate(-1, { replace: true })}>
               Cancelar
             </Button>
             <Button>Cadastrar</Button>

@@ -4,7 +4,7 @@ import * as MonitorService from "../../services/MonitorService.js";
 import Button from "../../form/Button.jsx";
 import Select from "react-select";
 
-export default function EditarCoordenador() {
+export default function EditarMonitor() {
     const navigate = useNavigate();
     const { id } = useParams();
     const [monitor, setMonitor] = useState({});
@@ -104,7 +104,7 @@ export default function EditarCoordenador() {
                 />
 
                 <div className="flex justify-center gap-2">
-                    <Button type="button" color="color" onClick={() => navigate("/coordenadores")}>
+                    <Button type="button" color="color" onClick={() => navigate(-1, { replace: true })}>
                         Cancelar
                     </Button>
                     <Button type="submit">Salvar Alterações</Button>

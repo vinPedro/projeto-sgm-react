@@ -6,7 +6,7 @@ import * as ProfessorService from "../../services/ProfessorService";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 
-export default function EditarAluno() {
+export default function EditarProfessor() {
   const { id } = useParams();
   const [perfil, setPerfil] = useState(null);
   const [form, setForm] = useState({});
@@ -180,7 +180,7 @@ export default function EditarAluno() {
                 type="button"
                 color="color"
                 onClick={() => {
-                  navigate(-1)
+                  navigate(-1, { replace: true })
                 }}
                 className="bg-gray-300 text-black px-4 py-2 rounded-lg"
               >

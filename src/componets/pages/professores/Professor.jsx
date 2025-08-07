@@ -37,7 +37,7 @@ export default function Professor() {
   if (!professor)
     return (
       <div className="flex justify-center items-center min-h-[80vh] ">
-        <h1 className="text-[1.2em] font-semibold">Carregando aluno...</h1>
+        <h1 className="text-[1.2em] font-semibold">Carregando professor...</h1>
       </div>
     );
 

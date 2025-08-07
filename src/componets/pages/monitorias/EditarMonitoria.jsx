@@ -6,7 +6,7 @@ import * as MonitoriaService from "../../services/MonitoriaService";
 import { useParams } from "react-router-dom";
 
 
-export default function EditarMonitorias() {
+export default function EditarMonitoria() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [form, setForm] = useState({
@@ -197,7 +197,7 @@ export default function EditarMonitorias() {
           <Button
             type="button"
             color="color"
-            onClick={() => navigate("/disciplinas")}
+            onClick={() => navigate(-1, { replace: true })}
           >
             Cancelar
           </Button>

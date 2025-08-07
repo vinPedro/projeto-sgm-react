@@ -3,10 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../form/Button";
 import Campo from "../../form/Campo";
 import * as AtividadeService from "../../services/AtividadeService";
+import { useAuth } from "../../AuthContext";
 
-export default function EditarDisciplina() {
+export default function EditarAtividade() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const {  user } = useAuth();
   
   const [form, setForm] = useState({
     /* ... */
@@ -31,7 +33,7 @@ export default function EditarDisciplina() {
         setMonitorias(respMonitorias.data)
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
-        setErros({ geral: "Erro ao carregar dados da disciplina." });
+        setErros({ geral: "Erro ao carregar dados da atividade." });
       } finally {
         setCarregando(false);
       }
@@ -67,9 +69,14 @@ export default function EditarDisciplina() {
       return;
     }
 
+    const payload = {
+            ...form,
+            matricula: user.matricula, // substitui o array de objetos por apenas os IDs
+        };
+
     setErros({});
 
-    AtividadeService.updateAtividade(id, form)
+    AtividadeService.updateAtividade(id, payload)
       .then(() => navigate(-1, { replace: true }))
       .catch((err) => {
         console.error("Erro ao atualizar atividade:", err);
@@ -137,7 +144,7 @@ export default function EditarDisciplina() {
           <Button
             type="button"
             color="color"
-            onClick={() => navigate("/disciplinas")}
+            onClick={() => navigate(-1, { replace: true })}
           >
             Cancelar
           </Button>

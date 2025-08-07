@@ -78,7 +78,7 @@ export default function NovaInstituicao() {
           <Button
             type="button"
             color="gray"
-            onClick={() => navigate("/instituicoes")}
+            onClick={() => navigate(-1, { replace: true })}
           >
             Cancelar
           </Button>

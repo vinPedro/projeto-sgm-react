@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import * as MonitorService from "../../services/MonitorService";
 import Select from "react-select";
 
-export default function NovoCoordenador() {
+export default function NovoMonitor() {
   const navigate = useNavigate();
   const [monitor, setMonitor] = useState({});
   const [erro, setErro] = useState(null);
@@ -106,7 +106,7 @@ export default function NovoCoordenador() {
           />
 
           <div className="flex justify-center">
-            <Button color="color" type="button" onClick={() => navigate(-1)}>
+            <Button color="color" type="button" onClick={() => navigate(-1, { replace: true })}>
               Cancelar
             </Button>
             <Button>Cadastrar</Button>

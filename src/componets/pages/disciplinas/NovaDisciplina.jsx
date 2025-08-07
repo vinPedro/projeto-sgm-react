@@ -117,7 +117,7 @@ export default function NovaDisciplina() {
           <Button
             type="button"
             color="color"
-            onClick={() => navigate("/disciplinas")}
+            onClick={() => navigate(-1, { replace: true })}
           >
             Cancelar
           </Button>

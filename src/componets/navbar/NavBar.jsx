@@ -10,23 +10,26 @@ function NavBar() {
       {/* Exibir item apenas para certos perfis */}
       {profile && (
         <ScrollContainer>
-          <NavItem to="/monitorias" label="Agenda" />
-
-          {Array.isArray(profile) && profile.some(p => p === "monitor") && (
-            <>
-            <NavItem to="/atividades" label="Atividade"/>
-            </>
-          )}
-
+          <NavItem to="/pessoa" label="Perfil"/>
+          <NavItem to="/processos" label="Processos"/>
+          
           {Array.isArray(profile) && profile.some(p => p === "aluno") && (
             <>
             </>
           )}
 
+          {Array.isArray(profile) && profile.some(p => p === "monitor" || p === "professor") && (
+            <>
+            <NavItem to="/atividades" label="Atividade"/>
+            
+            </>
+          )}
+
           {Array.isArray(profile) && profile.some(p => p === "professor") && (
             <>
-               <NavItem to="/monitores" label="Monitores"/>
-               <NavItem to="/monitorias" label="Monitorias" />
+            <NavItem to="/monitorias" label="Monitorias" />
+            <NavItem to="/disciplinas/professor" label="Minhas Disciplinas"/>
+            <NavItem to="/monitores" label="Monitores"/>
             </>
 
           )}
@@ -48,9 +51,7 @@ function NavBar() {
               <NavItem to="/cursos" label="Cursos" />
               <NavItem to="/coordenadores" label="Coordenadores" />
             </>
-
           )}
-
         </ScrollContainer>
       )}
     </nav>

@@ -104,7 +104,7 @@ export default function EditarCoordenador() {
                 />
 
                 <div className="flex justify-center gap-2">
-                    <Button type="button" color="color" onClick={() => navigate("/coordenadores")}>
+                    <Button type="button" color="color" onClick={() => navigate(-1, { replace: true })}>
                         Cancelar
                     </Button>
                     <Button type="submit">Salvar Alterações</Button>

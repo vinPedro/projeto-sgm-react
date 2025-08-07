@@ -14,13 +14,18 @@ function Login() {
     const params = new URLSearchParams(location.search);
     const erroQuery = params.get("erro");
     if (erroQuery === "acesso-negado") {
-      setErroLocal("Acesso negado. Você não tem permissão.");
+      exibirErroTemporario("Acesso negado. Você não tem permissão.");
     } else if (erroQuery === "nao-autenticado") {
-      setErroLocal("Você precisa estar logado para acessar esta página.");
+      exibirErroTemporario("Você precisa estar logado para acessar esta página.");
     } else if (erroQuery === "token-invalido") {
-      setErroLocal("Sua sessão é inválida ou expirou. Faça login novamente.");
+      exibirErroTemporario("Sua sessão é inválida ou expirou. Faça login novamente.");
     }
   }, [location.search]);
+
+  const exibirErroTemporario = (mensagem) => {
+    setErroLocal(mensagem);
+    setTimeout(() => setErroLocal(null), 4000);
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
