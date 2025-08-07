@@ -80,7 +80,7 @@ export const AuthProvider = ({ children }) => {
       const userProfiles = mapRolesToProfiles(userData.roles);
       setProfile(userProfiles);
 
-      navigate("/processos");
+      navigate("/monitorias");
     } catch (error) {
       console.error("Falha no login:", error);
       if (

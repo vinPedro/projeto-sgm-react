@@ -22,10 +22,6 @@ export const deleteDisciplina = (id) => {
   return api.delete(`${API_URL}/${id}`);
 };
 
-export const getDisciplinasProfessor = (id) => {
-  return api.get(`${API_URL}/professor/${id}`);
-};
-
 export const getCursos = () => {
   return api.get("/cursos");
 };

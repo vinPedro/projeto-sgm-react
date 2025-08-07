@@ -1,4 +1,4 @@
-function Button({ children, type = "submit", onClick, color, disabled }) { 
+function Button({ children, type = "submit", onClick, color }) { 
 
     return (
         <div className="text-center">
@@ -7,7 +7,6 @@ function Button({ children, type = "submit", onClick, color, disabled }) {
                 className={`shadow-xl w-[20vw] min-w-[100px] max-w-[150px] rounded-[10px] p-[8px] mt-[10px] m-[10px] text-white ${color ? 'hover:bg-gray-600' : 'hover:bg-secundaria'} ${color ? 'bg-gray-400' : 'bg-primaria'}`}
                 type={type}
                 onClick={onClick}
-                disabled={disabled}
             >
                 {children}
             </button>
