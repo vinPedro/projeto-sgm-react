@@ -3,32 +3,13 @@ import Campo from "../../form/Campo";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import * as AlunoService from "../../services/AlunoService";
-import Select from "react-select";
 
 export default function CadastroAluno() {
   const navigate = useNavigate();
   const [aluno, setAluno] = useState({});
   const [erro, setErro] = useState(null);
-    const [disciplinas, setDisciplinas] = useState([]);
   const [erros, setErros] = useState({});
   const [instituicoes, setInstituicoes] = useState([]);
-
-  useEffect(() => {
-      AlunoService.getDisciplinas()
-        .then((res) => {
-          const opcoes = res.data.map((d) => ({
-            value: d.id,
-            label: d.nome,
-          }));
-          setDisciplinas(opcoes);
-        })
-        .catch(() =>
-          setErros((prev) => ({
-            ...prev,
-            geral: "Erro ao carregar disciplinas.",
-          }))
-        );
-    }, []);
   
     useEffect(() => {
        AlunoService.getInstituicoes()
@@ -45,26 +26,11 @@ export default function CadastroAluno() {
     }
   };
 
-  const handleSelectChange = (name, selectedOptions) => {
-    setAluno((prev) => ({ ...prev, [name]: selectedOptions }));
-
-    if (erros[name]) {
-      setErros((prev) => ({ ...prev, [name]: null }));
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const idsSelecionados = (aluno.disciplinasPagasId ?? []).map((d) => d.value);
-
-    const payload = {
-      ...aluno,
-      disciplinasPagasId: idsSelecionados, // substitui o array de objetos por apenas os IDs
-    };
-
     try {
-      AlunoService.createAluno(payload);
+      AlunoService.createAluno(aluno);
       navigate(-1, { replace: true });
     } catch (error) {
       console.error("Erro ao cadastrar aluno:", error);
@@ -139,14 +105,6 @@ export default function CadastroAluno() {
             name="senha"
             value={aluno.senha ?? ""}
             onChange={handleChange}
-          />
-
-          <Select className="mb-2 mt-2"
-            isMulti
-            name="disciplinasPagasId"
-            options={disciplinas}
-            value={aluno.disciplinasPagasId ?? []}
-            onChange={(value) => handleSelectChange("disciplinasPagasId", value)}
           />
 
           <div className="flex justify-center">

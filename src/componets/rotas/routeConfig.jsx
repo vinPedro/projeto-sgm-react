@@ -285,7 +285,7 @@ export const routeConfig = [
     path: "/processos",
     element: <Processos />,
     isPrivate: true,
-    roles: ["admin"],
+    roles: ["admin", "aluno", "coordenador", "professor", "monitor"],
   },
   {
     path: "/processos/novo",
