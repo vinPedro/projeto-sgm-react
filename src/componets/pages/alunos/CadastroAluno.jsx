@@ -103,6 +103,7 @@ export default function CadastroAluno() {
             autoComplete="off"
             label="Senha"
             name="senha"
+            type="password"
             value={aluno.senha ?? ""}
             onChange={handleChange}
           />
